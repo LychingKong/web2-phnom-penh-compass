@@ -1,0 +1,5 @@
+const CONFIG = {
+  GOOGLE_PLACES_KEY: "",
+  OPENWEATHER_KEY: "",
+  TUGO_KEY: ""
+}

@@ -27,34 +27,41 @@ npm run build:css
 
 ```bash
 web2-phnom-penh-compass/
-├── index.html              # Home page (weather + hero section)
-├── explore.html            # Explore places page (Google Places API)
-├── services.html           # Services & emergency contacts page
-├── dos-donts.html          # Cultural guidelines page
-├── advisory.html           # Travel advisory page (TuGo API)
+├── index.html              # Home page (entry point of the website)
 
-├── src/
-│   ├── js/                 # All JavaScript files
-│   │   ├── components.js   # Shared components (navbar, footer)
-│   │   ├── main.js         # General/common scripts (if needed)
-│   │   ├── weather.js      # Fetch and display weather data
-│   │   ├── explore.js      # Handle places data and UI
-│   │   ├── services.js     # Display services and contacts
-│   │   ├── emergencyData.js# Static emergency data
-│   │   ├── dos-donts.js    # Logic for do’s & don’ts page
-│   │   └── advisory.js     # Fetch and display advisory data
+├── pages/                  # Other pages of the website
+│   ├── advisory.html       # Travel advisory page
+│   ├── dos-donts.html      # Cultural guidelines page
+│   ├── explore.html        # Explore places page
+│   └── services.html       # Services & emergency contacts page
+
+├── src/                    # Source files (main development folder)
+│   ├── assets/             # Static files
+│   │   ├── images/         # Images used in the website
+│   │   └── icons/          # Icons used in the UI
 │
-│   ├── css/
-│   │   └── input.css       # Tailwind source file (edit here)
+│   ├── css/                # Styles source
+│   │   └── input.css       # Tailwind source file (edit this file)
 │
-│   └── assets/             # Images, icons, and other static files
+│   └── js/                 # JavaScript files
+│       ├── components.js   # Shared components (navbar, footer)
+│       ├── main.js         # General/common scripts
+│       ├── weather.js      # Home page weather logic (API)
+│       ├── explore.js      # Explore page logic (API + UI)
+│       ├── services.js     # Services page logic
+│       ├── emergencyData.js# Static emergency data
+│       ├── dos-donts.js    # Do’s & Don’ts page logic
+│       └── advisory.js     # Travel advisory logic (API)
 
-├── dist/
-│   └── output.css          # Generated Tailwind CSS (DO NOT edit)
+├── dist/                   # Generated files (do not edit)
+│   └── output.css          # Compiled Tailwind CSS
 
-├── package.json            # Project config and scripts
-├── tailwind.config.js      # Tailwind configuration
+├── .gitignore              # Files/folders ignored by Git
+├── config.example.js       # Example config for API keys
+├── package.json            # Project dependencies and scripts
+├── package-lock.json       # Dependency lock file
 ├── postcss.config.js       # PostCSS configuration
+├── tailwind.config.js      # Tailwind configuration
 └── README.md               # Project documentation
 ```
 
@@ -66,7 +73,7 @@ web2-phnom-penh-compass/
 Each HTML file must include:
 
 ```bash
-<link rel="stylesheet" href="./dist/output.css">
+<link rel="stylesheet" href="../dist/output.css">
 ```
 
 ## Workflow

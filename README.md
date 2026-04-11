@@ -22,9 +22,6 @@ npm run build:css
 ```
 
 ## Project Structure
-
-# Project Structure
-
 ```bash
 web2-phnom-penh-compass/
 ├── index.html              # Home page (entry point of the website)

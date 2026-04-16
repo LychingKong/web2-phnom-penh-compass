@@ -1,0 +1,171 @@
+<!-- Mobile Menu Checkbox -->
+<input type="checkbox" id="menu-toggle" class="hidden peer" />
+
+<!-- dark overlay -->
+<label
+  for="menu-toggle"
+  class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden peer-checked:block"
+>
+</label>
+
+<!-- mobile menu penel -->
+<div
+  class="fixed top-0 right-0 h-full w-80 bg-white shadow-2xl z-50 translate-x-full peer-checked:translate-x-0 transition-all duration-300 overflow-y-auto"
+>
+  <div class="flex justify-between items-center p-6 border-b border-gray-200">
+    <h2 class="text-xl font-bold">Menu</h2>
+    <label for="menu-toggle" class="cursor-pointer">
+      <i class="fa-solid fa-xmark text-xl"></i>
+    </label>
+  </div>
+
+  <div class="space-y-1">
+    <a
+      href="public/pages/../../index.html"
+      class="block px-6 py-4 border-b hover:bg-gray-100"
+      >Home</a
+    >
+    <a
+      href="public/pages/explore-page/explore.html"
+      class="block px-6 py-4 border-b hover:bg-gray-100"
+      >Explore</a
+    >
+
+    <a
+      href="public/pages/choose-your-vibe-page/your-vibe.html"
+      class="block px-6 py-4 border-b hover:bg-gray-100"
+      >Choose Your Vibe</a
+    >
+
+    <input type="checkbox" id="mobile-services" class="hidden peer/m" />
+    <label
+      for="mobile-services"
+      class="flex justify-between items-center px-6 py-4 border-b cursor-pointer hover:bg-gray-100"
+    >
+      Services
+      <i
+        class="fa-solid fa-chevron-down text-sm peer-checked/m:rotate-180 transition"
+      ></i>
+    </label>
+    <!-- services' dropdwon -->
+    <div class="max-h-0 overflow-hidden peer-checked/m:max-h-96 transition-all">
+      <a
+        href="public/pages/services-page/emergency.html"
+        class="block px-10 py-3 border-b hover:bg-gray-100"
+        >Emergency</a
+      >
+      <a
+        href="public/pages/services-page/hospitals.html"
+        class="block px-10 py-3 border-b hover:bg-gray-100"
+        >Hospitals</a
+      >
+      <a
+        href="public/pages/services-page/embassies.html"
+        class="block px-10 py-3 border-b hover:bg-gray-100"
+        >Embassies</a
+      >
+      <a
+        href="public/pages/services-page/useful-app.html"
+        class="block px-10 py-3 hover:bg-gray-100"
+        >Useful Apps</a
+      >
+    </div>
+
+    <a
+      href="public/pages/dos-donts-page/dos-donts.html"
+      class="block px-6 py-4 border-b hover:bg-gray-100"
+      >Do's & Don'ts</a
+    >
+
+    <a href="#" class="flex items-center px-6 py-4 hover:bg-gray-100">
+      <div
+        class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-white mr-3"
+      >
+        <i class="fa-solid fa-user"></i>
+      </div>
+      Profile
+    </a>
+  </div>
+</div>
+
+<!-- Desktop Navbar -->
+<header class="fixed top-0 left-0 w-full z-30 bg-[#FBFCF6] shadow-sm">
+  <nav
+    class="max-w-7xl mx-auto px-6 lg:px-10 h-20 flex items-center justify-between"
+  >
+    <!-- logo -->
+    <a href="public/pages/../../index.html">
+      <img
+        src="public/assets/phnompenh-compass-logo.svg"
+        alt="PP Compass Logo"
+      />
+    </a>
+
+    <!-- menu -->
+    <div class="hidden md:flex items-center space-x-6">
+      <a
+        href="public/pages/explore-page/explore.html"
+        class="hover:text-yellow-600"
+        >Explore</a
+      >
+      <a
+        href="public/pages/choose-your-vibe-page/your-vibe.html"
+        class="hover:text-yellow-600"
+        >Choose Your Vibe</a
+      >
+
+      <div class="relative group">
+        <button class="flex items-center gap-1 hover:text-yellow-600">
+          Services
+          <i class="fa-solid fa-chevron-down text-xs"></i>
+        </button>
+
+        <!-- services's dropdown -->
+        <div
+          class="absolute left-0 top-full mt-2 w-48 bg-white border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-200"
+        >
+          <a
+            href="public/pages/services-page/emergency.html"
+            class="block px-4 py-3 hover:bg-gray-100"
+            >Emergency</a
+          >
+          <a
+            href="public/pages/services-page/hospitals.html"
+            class="block px-4 py-3 hover:bg-gray-100"
+            >Hospitals</a
+          >
+          <a
+            href="public/pages/services-page/embassies.html"
+            class="block px-4 py-3 hover:bg-gray-100"
+            >Embassies</a
+          >
+          <a
+            href="public/pages/services-page/useful-app.html"
+            class="block px-4 py-3 hover:bg-gray-100"
+            >Useful Apps</a
+          >
+        </div>
+      </div>
+
+      <a
+        href="public/pages/dos-donts-page/dos-donts.html"
+        class="hover:text-yellow-600"
+        >Do's & Don'ts</a
+      >
+    </div>
+
+    <!-- user's profile -->
+    <div class="hidden md:flex items-center">
+      <div
+        class="w-8 h-8 bg-gray-700 rounded-full flex justify-center items-center text-white"
+      >
+        <i class="fa-solid fa-user"></i>
+      </div>
+    </div>
+
+    <!-- mobile toggle button -->
+    <label for="menu-toggle" class="md:hidden cursor-pointer">
+      <i class="fa-solid fa-bars text-2xl"></i>
+    </label>
+  </nav>
+</header>

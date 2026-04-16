@@ -1,6 +1,6 @@
-# Phnom Penh Compass
+# Phnom Penh Compass 🧭
 
-## Setup
+## Project Setup
 
 ### 1. Clone the repository
 
@@ -9,96 +9,116 @@ git clone https://github.com/ManithSoun/web2-phnom-penh-compass.git
 cd web2-phnom-penh-compass
 ```
 
-### 2. Install Dependencies
+### 2. Set up your API keys
+
+Create a new file `config.js` \
+Copy the `config.example.js` and paste to it.
 
 ```bash
-npm install
+cp config.example.js config.js
 ```
 
-### 3. Run Tailwind
+Open `config.js` and fill in your real API keys:
 
-```bash
-npm run build:css
+```js
+// config.js
+const CONFIG = {
+  GOOGLE_PLACES_KEY: "your_key_here",
+  OPENWEATHER_KEY: "your_key_here",
+  TUGO_KEY: "your_key_here",
+};
 ```
+
+### 3. Working on your page
+
+Copy `template.html` and paste it to your HTML page, then:
+
+- Write your content inside `<main>`
 
 ## Project Structure
 
-# Project Structure
-
-```bash
-web2-phnom-penh-compass/
-├── index.html              # Home page (entry point of the website)
-
-├── pages/                  # Other pages of the website
-│   ├── advisory.html       # Travel advisory page
-│   ├── dos-donts.html      # Cultural guidelines page
-│   ├── explore.html        # Explore places page
-│   └── services.html       # Services & emergency contacts page
-
-├── src/                    # Source files (main development folder)
-│   ├── assets/             # Static files
-│   │   ├── images/         # Images used in the website
-│   │   └── icons/          # Icons used in the UI
-│
-│   ├── css/                # Styles source
-│   │   └── input.css       # Tailwind source file (edit this file)
-│
-│   └── js/                 # JavaScript files
-│       ├── components.js   # Shared components (navbar, footer)
-│       ├── main.js         # General/common scripts
-│       ├── weather.js      # Home page weather logic (API)
-│       ├── explore.js      # Explore page logic (API + UI)
-│       ├── services.js     # Services page logic
-│       ├── emergencyData.js# Static emergency data
-│       ├── dos-donts.js    # Do’s & Don’ts page logic
-│       └── advisory.js     # Travel advisory logic (API)
-
-├── dist/                   # Generated files (do not edit)
-│   └── output.css          # Compiled Tailwind CSS
-
-├── .gitignore              # Files/folders ignored by Git
-├── config.example.js       # Example config for API keys
-├── package.json            # Project dependencies and scripts
-├── package-lock.json       # Dependency lock file
-├── postcss.config.js       # PostCSS configuration
-├── tailwind.config.js      # Tailwind configuration
-└── README.md               # Project documentation
 ```
+web2-phnom-penh-compass/
+├── pages/                       # Paste the template.html file to your belong page in this folder
+│   ├── advisory.html
+│   ├── dos-donts.html
+│   ├── explore.html
+│   └── services.html
+├── src/
+│   ├── assets/                   # Folder for images and icons
+│   │   ├── images/
+│   │   └── icons/
+│   ├── components/               # Create reusable UI components in this folder (cards, sections, etc.)
+│   │   ├── navbar.html           # Shared navbar — DO NOT EDIT unless assigned
+│   │   └── footer.html           # Shared footer — DO NOT EDIT unless assigned
+│   ├── css/
+│   │   └── style.css             # Custom styles only
+│   └── js/
+│       ├── components.js         # Loads navbar & footer — DO NOT EDIT unless assigned
+│       ├── main.js               # Home page JS
+│       ├── explore.js
+│       ├── services.js
+│       ├── servicesData.js       # For the static data for Services page
+│       ├── dos-donts.js
+│       └── advisory.js
+├── index.html                    # Home page
+├── template.html                 # Base template — copy this for new pages
+├── config.js                     # Your API keys — NEVER commit this
+├── config.example.js
+├── .gitignore
+└── README.md
+```
+
+## Coding Standards
 
 ### CSS
 
-- Do not edit dist/output.css
-- Edit src/css/input.css
+- Use **Tailwind classes** directly in HTML for all styling
+- Only use `src/css/style.css` for custom styles Tailwind cannot handle
+- Font (Raleway) is already imported in `style.css` — do not add font links in HTML
 
-Each HTML file must include:
+### JS
 
-```bash
-<link rel="stylesheet" href="../dist/output.css">
+Always use `async/await` and handle errors for API calls:
+
+```js
+async function fetchData() {
+  try {
+    const res = await fetch(`https://...`);
+    if (!res.ok) throw new Error("Request failed");
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.error("fetchData error:", err);
+  }
+}
 ```
 
-## Workflow
+## Git Workflow
 
-### Start working
+### Branch Naming
+
+```
+feature/page-name
+```
+
+### Workflow
 
 ```bash
-# Pull the latest main
+# 1. Always pull the latest main first
 git checkout main
 git pull origin main
-#  Create your own branch
-git checkout -b feature/your-task
-```
 
-### After finishing
+# 2. Create your own branch
+git checkout -b feature/your-feature-name
 
-```bash
-# Commit code to the git
+# 3. Work and commit often
 git add .
 git commit -m "feat(page): describe what you did"
-# Push your branch to GitHub
-git push origin feature/your-task
+
+# 4. Push your branch
+git push origin feature/your-feature-name
+
+# 5. Open a Pull Request on GitHub
+# → Get at least 1 teammate to review before merging
 ```
-
-# Notes
-
-- Run `npm run build:css` before coding
-- Do not commit API keys

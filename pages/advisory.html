@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Travel Advisory — Phnom Penh Compass</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../src/css/style.css" />
+  </head>
+
+  <body class="flex flex-col min-h-screen bg-[#FBFCF6] text-gray-800">
+    <header></header>
+
+    <main class="flex-grow">
+      <!-- Hero -->
+      <section class="bg-[#1C3F5E] text-white py-16 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+          <h1 class="text-4xl font-bold mb-4">Cambodia Travel Advisory</h1>
+          <p class="text-gray-300 text-lg">
+            Check out how Cambodia is right now before your travel. Here is the
+            latest travel safety information for Cambodia.
+          </p>
+        </div>
+      </section>
+
+      <!-- Content -->
+      <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-6">
+        <!-- Loading -->
+        <div id="loading" class="text-center py-20">
+          <i
+            class="fa-solid fa-spinner fa-spin text-3xl text-gray-400 mb-4"
+          ></i>
+          <p class="text-gray-400 text-lg mt-4">Loading advisory data...</p>
+        </div>
+
+        <!-- Error -->
+        <div id="error" class="hidden text-center py-20">
+          <i class="fa-solid fa-triangle-exclamation text-3xl text-red-400"></i>
+          <p class="text-red-400 text-lg mt-4">
+            Failed to load advisory data. Please try again later.
+          </p>
+        </div>
+
+        <!-- Advisory Content -->
+        <div id="advisory-content" class="hidden space-y-6">
+          <!-- Risk Card -->
+          <div
+            class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8"
+          >
+            <div
+              class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6"
+            >
+              <div>
+                <p class="text-sm text-gray-400 mb-1">Country</p>
+                <h2 class="text-3xl font-bold text-[#1C3F5E]">Cambodia</h2>
+                <p class="text-sm text-gray-400 mt-1">Region: Asia</p>
+              </div>
+              <span
+                id="risk-badge"
+                class="self-start sm:self-center px-5 py-2 rounded-full text-sm font-semibold"
+              ></span>
+            </div>
+            <div class="border-t border-gray-100 pt-6">
+              <p
+                class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2"
+              >
+                Overall Advisory
+              </p>
+              <p id="overall-advice" class="text-gray-700 leading-relaxed"></p>
+            </div>
+          </div>
+
+          <!-- Latest Update Card -->
+          <div
+            class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8"
+          >
+            <div class="flex items-center gap-3 mb-4">
+              <div
+                class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center"
+              >
+                <i class="fa-solid fa-newspaper text-[#1C3F5E] text-sm"></i>
+              </div>
+              <h3 class="text-lg font-semibold text-[#1C3F5E]">
+                Latest Update
+              </h3>
+            </div>
+            <p id="last-update" class="text-gray-600 leading-relaxed"></p>
+            <p
+              id="last-changed"
+              class="text-xs text-gray-400 mt-4 text-right"
+            ></p>
+          </div>
+
+          <!-- Advice Levels Card -->
+          <div
+            class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8"
+          >
+            <div class="flex items-center gap-3 mb-6">
+              <div
+                class="w-8 h-8 rounded-full bg-yellow-50 flex items-center justify-center"
+              >
+                <i
+                  class="fa-solid fa-map-location-dot text-yellow-600 text-sm"
+                ></i>
+              </div>
+              <h3 class="text-lg font-semibold text-[#1C3F5E]">
+                Advice by Area
+              </h3>
+            </div>
+            <div id="advice-levels" class="space-y-3"></div>
+          </div>
+
+          <!-- Read More -->
+          <div class="bg-[#1C3F5E] rounded-2xl p-8 text-white text-center">
+            <i class="fa-solid fa-globe text-3xl mb-4 opacity-80"></i>
+            <h3 class="text-lg font-semibold mb-2">Read the Full Advisory</h3>
+            <p class="text-gray-300 text-sm mb-6">
+              This information is sourced from the Australian Government's
+              Smartraveller. Visit the official page for complete details.
+            </p>
+            <a
+              id="advisory-link"
+              href="#"
+              target="_blank"
+              class="inline-block bg-[#DFB777] text-[#1C3F5E] font-semibold px-6 py-3 rounded-full hover:bg-[#be924b] transition"
+            >
+              Visit Smartraveller
+              <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer></footer>
+
+    <script src="../config.js"></script>
+    <script src="../src/js/components.js"></script>
+    <script src="../src/js/advisory.js"></script>
+  </body>
+</html>

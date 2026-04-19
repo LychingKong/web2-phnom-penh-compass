@@ -9,7 +9,7 @@ git clone https://github.com/ManithSoun/web2-phnom-penh-compass.git
 cd web2-phnom-penh-compass
 ```
 
-### 2. Set up your API keys
+### 2. Set up your API keys (in case an api needs api key)
 
 Create a new file `config.js` \
 Copy the `config.example.js` and paste to it.
@@ -25,7 +25,6 @@ Open `config.js` and fill in your real API keys:
 const CONFIG = {
   GOOGLE_PLACES_KEY: "your_key_here",
   OPENWEATHER_KEY: "your_key_here",
-  TUGO_KEY: "your_key_here",
 };
 ```
 

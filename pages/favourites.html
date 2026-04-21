@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Favourites — Phnom Penh Compass</title>
+    <meta
+      name="description"
+      content="All the Phnom Penh cafés, restaurants, museums and sights you've saved in one place."
+    />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- EmailJS -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <!-- Font Awesome CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="../src/css/style.css" />
+  </head>
+
+  <body class="flex flex-col min-h-screen bg-background text-gray-800">
+    <!-- Navbar — loaded by components.js -->
+    <header></header>
+
+    <main class="pt-20 grow">
+      <!-- Hero Section -->
+      <section class="px-4 py-12 mx-auto text-center max-w-7xl sm:px-6 lg:px-8">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-rose-100 mb-5">
+          <i class="fa-solid fa-heart text-rose-500 text-2xl"></i>
+        </div>
+        <h1 class="text-4xl sm:text-5xl font-bold text-primary mb-4">
+          My Favourites
+        </h1>
+        <p id="fav-count" class="max-w-2xl mx-auto text-lg text-gray-500"></p>
+      </section>
+
+      <!-- Favourites Grid -->
+      <section class="px-4 pb-16 mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div
+          id="favourites-grid"
+          class="flex flex-wrap gap-6 justify-center"
+        >
+          <!-- Cards rendered by favourites.js -->
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer — loaded by components.js -->
+    <footer></footer>
+
+    <!-- Scripts — order matters, do not change -->
+    <script src="../config.js"></script>
+    <script src="../src/js/components.js"></script>
+
+    <!-- Favourites renderer -->
+    <script src="../src/js/favourites.js"></script>
+
+    <!-- Custom tailwind configuration -->
+    <script src="../tailwind-config.js"></script>
+  </body>
+</html>

@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Change this to your page name -->
+    <title>Page Name — Phnom Penh Compass</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- EmailJS -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <!-- Font Awesome CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="../src/css/style.css" />
+  </head>
+
+  <body class="flex flex-col min-h-screen bg-background text-gray-800">
+    <!-- Navbar — loaded by components.js -->
+    <header></header>
+
+    <main class="pt-20 grow">
+      <!-- Hero Section -->
+      <section class="px-4 py-12 mx-auto text-center max-w-7xl sm:px-6 lg:px-8">
+        <h1 class="text-4xl sm:text-5xl font-bold text-primary mb-4">
+          Explore Phnom Penh
+        </h1>
+        <p class="max-w-2xl mx-auto text-lg text-gray-600">
+          Cambodia's lively capital where history and modern life meet. Explore
+          golden temples, riverside cafés, bustling markets, and vibrant
+          nightlife — all wrapped in the warmth of Khmer hospitality.
+        </p>
+      </section>
+
+      <!-- Cafes Section -->
+      <section id="cafes" class="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-3xl font-bold text-primary">Cafés</h2>
+          <a
+            href="cafes.html"
+            class="text-sm font-semibold text-secondary hover:underline flex items-center gap-1"
+          >
+            See more
+            <i class="text-xs fas fa-arrow-right"></i>
+          </a>
+        </div>
+        <div class="overflow-x-auto scrollbar-hide">
+          <div id="cafes-list" class="flex gap-6 pb-4">
+            <!-- Cards rendered by explore.js -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Restaurants Section -->
+      <section
+        id="restaurants"
+        class="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8"
+      >
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-3xl font-bold text-primary">Restaurants</h2>
+          <a
+            href="restaurants.html"
+            class="text-sm font-semibold text-secondary hover:underline flex items-center gap-1"
+          >
+            See more
+            <i class="text-xs fas fa-arrow-right"></i>
+          </a>
+        </div>
+        <div class="overflow-x-auto scrollbar-hide">
+          <div id="restaurants-list" class="flex gap-6 pb-4">
+            <!-- Cards rendered by explore.js -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Museums Section -->
+      <section id="museums" class="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-3xl font-bold text-primary">Museums</h2>
+          <a
+            href="museums.html"
+            class="text-sm font-semibold text-secondary hover:underline flex items-center gap-1"
+          >
+            See more
+            <i class="text-xs fas fa-arrow-right"></i>
+          </a>
+        </div>
+        <div class="overflow-x-auto scrollbar-hide">
+          <div id="museums-list" class="flex gap-6 pb-4">
+            <!-- Cards rendered by explore.js -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Sights to See Section (keep original style) -->
+      <section id="sights" class="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-3xl font-bold text-primary">Sights to See</h2>
+          <a
+            href="sights2see.html"
+            class="text-sm font-semibold text-secondary hover:underline flex items-center gap-1"
+          >
+            See more
+            <i class="text-xs fas fa-arrow-right"></i>
+          </a>
+        </div>
+        <div class="overflow-x-auto scrollbar-hide">
+          <div id="sights-list" class="flex gap-6 pb-4">
+            <!-- Cards rendered by explore.js -->
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer — loaded by components.js -->
+    <footer></footer>
+
+    <!-- Scripts — order matters, do not change -->
+    <script src="../config.js"></script>
+    <script src="../src/js/components.js"></script>
+
+    <!-- Explore page data and renderer -->
+    <script src="../src/js/exploreData.js"></script>
+    <script src="../src/js/explore.js"></script>
+
+    <!-- Custom tailwind configuration -->
+    <script src="../tailwind-config.js"></script>
+  </body>
+</html>

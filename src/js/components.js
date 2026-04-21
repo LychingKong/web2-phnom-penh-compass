@@ -6,6 +6,8 @@ const fetchNavbar = async () => {
     const res = await fetch("/src/components/navbar.html")
     const template = await res.text()
     navbarElement.innerHTML = template
+    // Notify other scripts (e.g. favourites badge) that the navbar is ready
+    document.dispatchEvent(new CustomEvent("navbarReady"))
   } catch (err) {
     console.log(err)
   }

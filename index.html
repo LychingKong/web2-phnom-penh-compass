@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home — Phnom Penh Compass</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- EmailJS -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <!-- Font Awesome CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="src/css/style.css" />
+
+    <style>
+      /* ── Weather Widget ───────────────────────────── */
+      .weather-widget {
+        background: linear-gradient(135deg, #1c3f5e 0%, #2a5f8a 55%, #1a6fa8 100%);
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(28, 63, 94, 0.22);
+        position: relative;
+        overflow: hidden;
+      }
+      .weather-widget::before {
+        content: '';
+        position: absolute;
+        top: -40px; right: -40px;
+        width: 180px; height: 180px;
+        background: rgba(255,255,255,0.06);
+        border-radius: 50%;
+        pointer-events: none;
+      }
+      .weather-widget::after {
+        content: '';
+        position: absolute;
+        bottom: -30px; left: -20px;
+        width: 120px; height: 120px;
+        background: rgba(255,255,255,0.04);
+        border-radius: 50%;
+        pointer-events: none;
+      }
+      .weather-icon-large { font-size: 3.5rem; line-height: 1; }
+      .weather-temp {
+        font-size: 3rem;
+        font-weight: 700;
+        line-height: 1;
+        color: #fff;
+      }
+      .weather-pill {
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.15);
+        border-radius: 999px;
+        padding: 4px 12px;
+        font-size: 0.78rem;
+        color: #e2f0ff;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        white-space: nowrap;
+      }
+      .w-skeleton {
+        background: linear-gradient(
+          90deg,
+          rgba(255,255,255,0.08) 25%,
+          rgba(255,255,255,0.20) 50%,
+          rgba(255,255,255,0.08) 75%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.4s infinite;
+        border-radius: 6px;
+      }
+      @keyframes shimmer {
+        0%   { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+      .weather-err-box {
+        background: rgba(255,255,255,0.08);
+        border: 1px dashed rgba(255,255,255,0.22);
+        border-radius: 12px;
+      }
+
+      /* ── Quick Nav Cards ──────────────────────────── */
+      .qnav-card {
+        background: #fff;
+        border: 1.5px solid #e2eaf2;
+        border-radius: 16px;
+        padding: 18px 12px;
+        text-align: center;
+        text-decoration: none;
+        color: #1C3F5E;
+        transition: all 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 9px;
+      }
+      .qnav-card:hover {
+        border-color: #DFB777;
+        box-shadow: 0 6px 22px rgba(28,63,94,0.11);
+        transform: translateY(-3px);
+      }
+      .qnav-icon {
+        width: 46px; height: 46px;
+        background: linear-gradient(135deg, #1C3F5E 0%, #2a5f8a 100%);
+        border-radius: 13px;
+        display: flex; align-items: center; justify-content: center;
+        color: #fff;
+        font-size: 1.15rem;
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+      }
+      .qnav-card:hover .qnav-icon {
+        transform: scale(1.1);
+        background: linear-gradient(135deg, #DFB777 0%, #c99840 100%);
+      }
+      .qnav-label {
+        font-weight: 600;
+        font-size: 0.82rem;
+        line-height: 1.3;
+        color: #1C3F5E;
+      }
+
+      /* ── Hero live badge ──────────────────────────── */
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(28,63,94,0.07);
+        border: 1px solid rgba(28,63,94,0.13);
+        border-radius: 999px;
+        padding: 5px 15px;
+        font-size: 0.80rem;
+        color: #1C3F5E;
+        font-weight: 600;
+      }
+      .hero-badge .live-dot {
+        width: 7px; height: 7px;
+        background: #22c55e;
+        border-radius: 50%;
+        animation: livepulse 2s infinite;
+        box-shadow: 0 0 0 2px rgba(34,197,94,0.3);
+        flex-shrink: 0;
+      }
+      @keyframes livepulse {
+        0%,100% { box-shadow: 0 0 0 2px rgba(34,197,94,0.28); }
+        50%      { box-shadow: 0 0 0 5px rgba(34,197,94,0.10); }
+      }
+    </style>
+  </head>
+
+  <body class="flex flex-col min-h-screen bg-background text-gray-800">
+
+    <!-- Navbar injected by components.js -->
+    <header></header>
+
+    <main class="flex-grow">
+
+      <!-- ════════════════════════════════════════════
+           HERO SECTION
+      ════════════════════════════════════════════ -->
+      <section class="bg-background pt-32 pb-10">
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+
+          <div class="space-y-5">
+            <div class="hero-badge">
+              <span class="live-dot"></span>
+              Your guide to Phnom Penh — updated daily
+            </div>
+
+            <h1 class="text-5xl font-bold text-[#1C3F5E] leading-tight">
+              Discover Phnom Penh<br />with Confidence
+            </h1>
+
+            <p class="text-gray-600 text-lg leading-relaxed">
+              A clean, simple guide to cafés, attractions, local services,
+              and essential tips — everything you need in one place.
+            </p>
+
+            <div class="flex gap-4 pt-2 flex-wrap">
+              <a href="/pages/explore.html"
+                class="px-6 py-3 bg-[#1C3F5E] text-white rounded-xl hover:bg-[#162d49] transition font-semibold">
+                <i class="fa-solid fa-compass mr-2"></i>Start Exploring
+              </a>
+              <a href="/pages/services/emergency.html"
+                class="px-6 py-3 border-2 border-[#1C3F5E] rounded-xl text-[#1C3F5E] hover:bg-[#1C3F5E] hover:text-white transition font-semibold">
+                <i class="fa-solid fa-triangle-exclamation mr-2"></i>Emergency Info
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <img
+              src="https://images.unsplash.com/photo-1568021735466-c66b1e19c47a?w=700"
+              alt="Phnom Penh cityscape"
+              class="rounded-3xl shadow-xl w-full object-cover aspect-[4/3]"
+            />
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════
+           WEATHER WIDGET  +  QUICK NAV
+      ════════════════════════════════════════════ -->
+      <section class="bg-background py-8">
+        <div class="max-w-7xl mx-auto px-6">
+          <div class="grid md:grid-cols-5 gap-6 items-stretch">
+
+            <!-- ── Weather Widget (2 / 5 cols) ── -->
+            <div class="md:col-span-2 weather-widget p-6 text-white flex flex-col min-h-[220px]">
+
+              <!-- State 1: loading skeleton -->
+              <div id="w-loading">
+                <p class="text-xs font-semibold uppercase tracking-widest text-blue-200 mb-4">
+                  <i class="fa-solid fa-location-dot mr-1"></i>Current Weather
+                </p>
+                <div class="w-skeleton h-4 w-32 mb-4"></div>
+                <div class="flex items-center gap-4 mb-5">
+                  <div class="w-skeleton h-14 w-14 rounded-xl"></div>
+                  <div class="space-y-2 flex-1">
+                    <div class="w-skeleton h-10 w-28"></div>
+                    <div class="w-skeleton h-4 w-36"></div>
+                  </div>
+                </div>
+                <div class="flex gap-2 flex-wrap">
+                  <div class="w-skeleton h-7 w-24 rounded-full"></div>
+                  <div class="w-skeleton h-7 w-20 rounded-full"></div>
+                  <div class="w-skeleton h-7 w-24 rounded-full"></div>
+                </div>
+              </div>
+
+              <!-- State 2: live data -->
+              <div id="w-content" class="hidden flex flex-col flex-1">
+                <div class="flex items-start justify-between mb-3 relative z-10">
+                  <div>
+                    <p class="text-xs font-semibold uppercase tracking-widest text-blue-200 mb-1">
+                      <i class="fa-solid fa-location-dot mr-1"></i>Current Weather
+                    </p>
+                    <p class="text-white font-bold" id="w-city">Phnom Penh, KH</p>
+                  </div>
+                  <div class="text-right">
+                    <p class="text-blue-200 text-xs font-medium" id="w-time"></p>
+                    <p class="text-blue-300 text-xs" id="w-date"></p>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-4 relative z-10 mb-4">
+                  <div class="weather-icon-large" id="w-icon">🌤️</div>
+                  <div>
+                    <div class="weather-temp" id="w-temp">--°C</div>
+                    <p class="text-blue-100 text-sm capitalize font-medium" id="w-desc">--</p>
+                    <p class="text-blue-300 text-xs mt-0.5">Feels like <span id="w-feels">--</span></p>
+                  </div>
+                </div>
+
+                <div class="flex gap-2 flex-wrap relative z-10">
+                  <div class="weather-pill">
+                    <i class="fa-solid fa-droplet text-blue-300"></i>
+                    <span id="w-humidity">--%</span> humidity
+                  </div>
+                  <div class="weather-pill">
+                    <i class="fa-solid fa-wind text-blue-300"></i>
+                    <span id="w-wind">-- km/h</span>
+                  </div>
+                  <div class="weather-pill">
+                    <i class="fa-solid fa-eye text-blue-300"></i>
+                    <span id="w-vis">-- km</span>
+                  </div>
+                </div>
+
+                <p class="text-blue-400 text-xs mt-4 relative z-10">
+                  <i class="fa-solid fa-rotate-right mr-1"></i>
+                  Live via OpenWeatherMap · auto-refreshes every 10 min
+                </p>
+              </div>
+
+              <!-- State 3: error -->
+              <div id="w-error" class="hidden weather-err-box p-5 text-center flex flex-col items-center justify-center gap-2 flex-1">
+                <i class="fa-solid fa-cloud-slash text-3xl text-blue-300"></i>
+                <p class="text-blue-100 text-sm font-medium">Couldn't load weather</p>
+                <p class="text-blue-300 text-xs">Add <code class="bg-white/10 px-1 rounded">OPENWEATHER_KEY</code> to config.js</p>
+                <button onclick="initWeather()"
+                  class="mt-1 px-4 py-1.5 bg-white/15 hover:bg-white/25 transition rounded-full text-xs text-white">
+                  <i class="fa-solid fa-rotate-right mr-1"></i>Retry
+                </button>
+              </div>
+            </div>
+
+            <!-- ── Quick Navigation (3 / 5 cols) ── -->
+            <div class="md:col-span-3 flex flex-col">
+              <p class="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">
+                <i class="fa-solid fa-bolt mr-1" style="color:#DFB777"></i>Quick Navigation
+              </p>
+              <div class="grid grid-cols-3 gap-3 flex-1">
+                <a href="/pages/explore.html" class="qnav-card">
+                  <div class="qnav-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+                  <span class="qnav-label">Explore<br/>the City</span>
+                </a>
+                <a href="/pages/advisory.html" class="qnav-card">
+                  <div class="qnav-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                  <span class="qnav-label">Advisory</span>
+                </a>
+                <a href="/pages/services/emergency.html" class="qnav-card">
+                  <div class="qnav-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                  <span class="qnav-label">Emergency<br/>Info</span>
+                </a>
+                <a href="/pages/services/hospitals.html" class="qnav-card">
+                  <div class="qnav-icon"><i class="fa-solid fa-hospital"></i></div>
+                  <span class="qnav-label">Hospitals<br/>&amp; Clinics</span>
+                </a>
+                <a href="/pages/services/embassies.html" class="qnav-card">
+                  <div class="qnav-icon"><i class="fa-solid fa-flag"></i></div>
+                  <span class="qnav-label">Embassies<br/>&amp; Consulates</span>
+                </a>
+                <a href="/pages/dos-donts.html" class="qnav-card">
+                  <div class="qnav-icon"><i class="fa-solid fa-hands-praying"></i></div>
+                  <span class="qnav-label">Do's &amp;<br/>Don'ts</span>
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════
+           WHAT WE OFFER
+      ════════════════════════════════════════════ -->
+      <section class="bg-[#1C3F5E] py-20">
+        <div class="max-w-7xl mx-auto px-6 text-white">
+          <h2 class="text-3xl font-bold text-center mb-3">What We Offer</h2>
+          <p class="text-center text-blue-100 mb-12">
+            Useful features all in one place — made for locals, travelers, expats, and students.
+          </p>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="bg-white text-[#1C3F5E] p-6 rounded-2xl shadow-sm text-center">
+              <i class="fa-solid fa-mug-hot text-3xl"></i>
+              <h3 class="font-semibold text-xl mt-3">Cafés &amp; Restaurants</h3>
+              <p class="text-gray-500 text-sm mt-1">Find cozy places and unique spots.</p>
+            </div>
+            <div class="bg-white text-[#1C3F5E] p-6 rounded-2xl shadow-sm text-center">
+              <i class="fa-solid fa-landmark text-3xl"></i>
+              <h3 class="font-semibold text-xl mt-3">Popular Attractions</h3>
+              <p class="text-gray-500 text-sm mt-1">Museums, monuments, and scenic stops.</p>
+            </div>
+            <div class="bg-white text-[#1C3F5E] p-6 rounded-2xl shadow-sm text-center">
+              <i class="fa-solid fa-hospital text-3xl"></i>
+              <h3 class="font-semibold text-xl mt-3">Hospitals &amp; Clinics</h3>
+              <p class="text-gray-500 text-sm mt-1">Quick access to health support.</p>
+            </div>
+            <div class="bg-white text-[#1C3F5E] p-6 rounded-2xl shadow-sm text-center">
+              <i class="fa-solid fa-circle-info text-3xl"></i>
+              <h3 class="font-semibold text-xl mt-3">Do's &amp; Don'ts</h3>
+              <p class="text-gray-500 text-sm mt-1">Stay respectful &amp; safe in Cambodia.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════
+           POPULAR DESTINATIONS
+      ════════════════════════════════════════════ -->
+      <section class="bg-background py-20">
+        <div class="max-w-7xl mx-auto px-6">
+          <h2 class="text-3xl font-bold text-center text-[#1C3F5E] mb-3">Popular Destinations</h2>
+          <p class="text-center text-gray-500 mb-12">Explore some of Phnom Penh's most visited and loved places.</p>
+
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <a href="/pages/explore.html" class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition group">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Royal_Palace%2C_Phnom_Penh.jpg/640px-Royal_Palace%2C_Phnom_Penh.jpg"
+                class="w-full h-48 object-cover group-hover:scale-105 transition duration-300" alt="Royal Palace" />
+              <div class="p-5">
+                <h3 class="font-bold text-lg text-[#1C3F5E]">Royal Palace</h3>
+                <p class="text-gray-500 text-sm mt-1">Historic Landmark</p>
+              </div>
+            </a>
+            <a href="/pages/explore.html" class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition group">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Wat_Phnom_%28Phnom_Penh%29.jpg/640px-Wat_Phnom_%28Phnom_Penh%29.jpg"
+                class="w-full h-48 object-cover group-hover:scale-105 transition duration-300" alt="Wat Phnom" />
+              <div class="p-5">
+                <h3 class="font-bold text-lg text-[#1C3F5E]">Wat Phnom</h3>
+                <p class="text-gray-500 text-sm mt-1">Buddhist Temple</p>
+              </div>
+            </a>
+            <a href="/pages/explore.html" class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition group">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/National_Museum_of_Cambodia.jpg/640px-National_Museum_of_Cambodia.jpg"
+                class="w-full h-48 object-cover group-hover:scale-105 transition duration-300" alt="National Museum" />
+              <div class="p-5">
+                <h3 class="font-bold text-lg text-[#1C3F5E]">National Museum</h3>
+                <p class="text-gray-500 text-sm mt-1">Khmer Art &amp; Culture</p>
+              </div>
+            </a>
+            <a href="/pages/explore.html" class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition group">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Phsar_Thmei_2.jpg/640px-Phsar_Thmei_2.jpg"
+                class="w-full h-48 object-cover group-hover:scale-105 transition duration-300" alt="Central Market" />
+              <div class="p-5">
+                <h3 class="font-bold text-lg text-[#1C3F5E]">Central Market</h3>
+                <p class="text-gray-500 text-sm mt-1">Shopping &amp; Food</p>
+              </div>
+            </a>
+          </div>
+
+          <div class="text-center mt-12">
+            <a href="/pages/explore.html"
+              class="px-6 py-3 bg-[#1C3F5E] text-white rounded-xl hover:bg-[#162d49] transition font-semibold">
+              See All Destinations →
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════
+           CULTURAL TIPS
+      ════════════════════════════════════════════ -->
+      <section class="bg-[#1C3F5E] py-20">
+        <div class="max-w-7xl mx-auto px-6 text-white">
+          <h2 class="text-3xl font-bold text-center mb-3">Cultural Tips For Visitors</h2>
+          <p class="text-center text-blue-100 max-w-xl mx-auto mb-12">
+            A quick preview from our full Do's &amp; Don'ts page — helping you blend in respectfully.
+          </p>
+          <div class="grid md:grid-cols-3 gap-8 text-center">
+            <div class="bg-white/10 rounded-2xl p-8">
+              <div class="text-5xl mb-4">🙏</div>
+              <h3 class="font-semibold text-xl mb-2">Greet With Sampeah</h3>
+              <p class="text-blue-200 text-sm">Press palms together and bow slightly as a respectful greeting.</p>
+            </div>
+            <div class="bg-white/10 rounded-2xl p-8">
+              <div class="text-5xl mb-4">👟</div>
+              <h3 class="font-semibold text-xl mb-2">Remove Shoes at Temples</h3>
+              <p class="text-blue-200 text-sm">Always take off footwear before entering sacred spaces.</p>
+            </div>
+            <div class="bg-white/10 rounded-2xl p-8">
+              <div class="text-5xl mb-4">🚫</div>
+              <h3 class="font-semibold text-xl mb-2">Don't Touch Heads</h3>
+              <p class="text-blue-200 text-sm">The head is considered sacred — avoid touching others' heads.</p>
+            </div>
+          </div>
+          <div class="text-center mt-12">
+            <a href="/pages/dos-donts.html"
+              class="px-6 py-3 bg-white text-[#1C3F5E] font-semibold rounded-xl hover:bg-gray-100 transition">
+              View All Do's &amp; Don'ts →
+            </a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer injected by components.js -->
+    <footer></footer>
+
+    <!-- Scripts — order matters, do not change -->
+    <script src="config.js"></script>
+    <script src="src/js/components.js"></script>
+    <script src="src/js/main.js"></script>
+    <script src="src/js/tailwind-config.js"></script>
+  </body>
+</html>

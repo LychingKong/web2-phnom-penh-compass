@@ -1,4 +1,8 @@
+// 1. The Data Array
 const servicesData = [
+  // ==========================================
+  // HOSPITALS
+  // ==========================================
   {
     category: "hospitals",
     name: "Calmette Hospital",
@@ -14,6 +18,7 @@ const servicesData = [
     link: "https://calmette.gov.kh/",
     icon: "fa-hospital",
   },
+
   {
     category: "hospitals",
     name: "Royal Phnom Penh Hospital",
@@ -30,6 +35,7 @@ const servicesData = [
     link: "https://royalphnompenhhospital.com/",
     icon: "fa-hospital",
   },
+
   {
     category: "hospitals",
     name: "Intercare Hospital",
@@ -46,6 +52,7 @@ const servicesData = [
     link: "https://intercarehospital.com/",
     icon: "fa-hospital",
   },
+
   {
     category: "hospitals",
     name: "Khema International Hospital",
@@ -60,6 +67,7 @@ const servicesData = [
     link: "https://khemahospital.com/en/",
     icon: "fa-hospital",
   },
+
   {
     category: "hospitals",
     name: "Sen Sok University Hospital",
@@ -75,6 +83,7 @@ const servicesData = [
     link: "https://sensokiuh.com/",
     icon: "fa-hospital",
   },
+
   {
     category: "hospitals",
     name: "Central Hospital Phnom Penh",
@@ -91,6 +100,7 @@ const servicesData = [
     link: "https://central-hospital.com/",
     icon: "fa-hospital",
   },
+
   {
     category: "hospitals",
     name: "Khmer-Soviet Friendship Hospital",
@@ -106,6 +116,7 @@ const servicesData = [
     link: "https://ksfh.gov.kh/",
     icon: "fa-hospital",
   },
+
   {
     category: "hospitals",
     name: "Preah Ang Duong Hospital",
@@ -121,6 +132,7 @@ const servicesData = [
     link: "http://preahangduong.org/",
     icon: "fa-hospital",
   },
+
   {
     category: "clinics",
     name: "Raffles Medical Phnom Penh",
@@ -137,6 +149,7 @@ const servicesData = [
     link: "https://rafflesmedical.com.kh/en/",
     icon: "fa-clinic-medical",
   },
+
   {
     category: "hospitals",
     name: "National Pediatric Hospital",
@@ -153,6 +166,7 @@ const servicesData = [
     link: "https://www.realestate.com.kh/guides/hospitals-and-clinics-in-cambodia/",
     icon: "fa-hospital",
   },
+
   {
     category: "hospitals",
     name: "Kantha Bopha Children's Hospital",
@@ -168,6 +182,7 @@ const servicesData = [
     link: "https://www.beat-richner.ch/",
     icon: "fa-hospital",
   },
+
   {
     category: "hospitals",
     name: "Preah Kossamak Hospital",
@@ -183,6 +198,10 @@ const servicesData = [
     link: "https://www.ccfkh.com/",
     icon: "fa-hospital",
   },
+
+  // ==========================================
+  // EMBASSIES
+  // ==========================================
   {
     category: "embassies",
     name: "Embassy of Australia",
@@ -428,6 +447,10 @@ const servicesData = [
     link: "https://kh.usembassy.gov/",
     icon: "fa-building-flag",
   },
+
+  // ==========================================
+  // USEFUL APPS
+  // ==========================================
   {
     category: "apps",
     name: "Grab",
@@ -620,7 +643,7 @@ const servicesData = [
   },
   {
     category: "apps",
-    name: "e-Gets",
+    name: "E-GetS",
     badge: "Food / Delivery",
     image:
       "https://play-lh.googleusercontent.com/exMf7qTDCqngwPbi1l9fK0tWXuLLtCKOwH1CuJPstpPzH3DWLZnwN61__FT-_WNGGz4=s96-rw",
@@ -670,15 +693,71 @@ const servicesData = [
     ],
   },
 ]
+
+// ==========================================
+// PAGINATION STATE
+// ==========================================
 let currentPage = 1
-const itemsPerPage = 18
+const itemsPerPage = 18 // <-- Increase this to 12, 15, or 18!
+
+// Global function to jump to a specific page
 window.goToPage = function (pageNumber) {
   currentPage = pageNumber
   renderCards()
+  // Smoothly scroll back to the top of the cards when the page changes
   window.scrollTo({ top: 0, behavior: "smooth" })
 }
+
+// ==========================================
+// FILTER STATE & CUSTOM DROPDOWN LOGIC
+// ==========================================
+let currentFilter = "All"
+
+// Opens and closes the menu
+window.toggleFilterDropdown = function (event) {
+  event.stopPropagation() // Stops the click from instantly triggering the document click listener below
+  const menu = document.getElementById("customDropdownMenu")
+  const icon = document.getElementById("filterDropdownIcon")
+
+  if (menu.classList.contains("opacity-0")) {
+    menu.classList.remove("opacity-0", "pointer-events-none", "-translate-y-2")
+    icon.classList.add("rotate-180")
+  } else {
+    closeFilterDropdown()
+  }
+}
+
+// Closes the menu
+window.closeFilterDropdown = function () {
+  const menu = document.getElementById("customDropdownMenu")
+  const icon = document.getElementById("filterDropdownIcon")
+  if (menu && !menu.classList.contains("opacity-0")) {
+    menu.classList.add("opacity-0", "pointer-events-none", "-translate-y-2")
+    icon.classList.remove("rotate-180")
+  }
+}
+
+// Closes the menu if they click anywhere else on the screen!
+document.addEventListener("click", function (event) {
+  const container = document.getElementById("customDropdownContainer")
+  if (container && !container.contains(event.target)) {
+    closeFilterDropdown()
+  }
+})
+
+// Handles selecting an item from the menu
+window.selectCustomFilter = function (value, label) {
+  currentFilter = value
+  currentPage = 1
+  document.getElementById("selectedFilterText").textContent = label // Update the button text
+  closeFilterDropdown() // Hide the menu
+  renderCards() // Refresh the page
+}
+
+// 2. Global Handlers (Flip & Accordion)
 window.handleCardFlip = function (clickedIndex, event) {
   if (event && event.target.closest("a")) return
+
   const allCards = document.querySelectorAll(".flip-inner")
   allCards.forEach((card, index) => {
     if (index === clickedIndex) {
@@ -688,10 +767,14 @@ window.handleCardFlip = function (clickedIndex, event) {
     }
   })
 }
+
+// Accordion toggle
 window.toggleAppCard = function (clickedIndex, event) {
   if (event && event.target.closest("a")) return
+
   const targetDetails = document.getElementById(`app-details-${clickedIndex}`)
   const targetChevron = document.getElementById(`chevron-${clickedIndex}`)
+
   if (
     targetDetails.style.maxHeight &&
     targetDetails.style.maxHeight !== "0px"
@@ -701,53 +784,89 @@ window.toggleAppCard = function (clickedIndex, event) {
   } else {
     const allDetails = document.querySelectorAll(".app-details-content")
     const allChevrons = document.querySelectorAll(".app-chevron")
+
     allDetails.forEach((div) => (div.style.maxHeight = "0px"))
     allChevrons.forEach((icon) => (icon.style.transform = "rotate(0deg)"))
+
     targetDetails.style.maxHeight = "1200px"
     targetChevron.style.transform = "rotate(180deg)"
   }
 }
+
+// ==========================================
+// SCROLL LISTENER FOR APP SCREENSHOTS
+// ==========================================
 window.handleScreenshotScroll = function (container) {
   if (!container) return
   const arrow = container.parentElement.querySelector(".swipe-arrow")
   if (!arrow) return
+
+  // Math Check 1: Is the content actually wider than the container? (Needs scroll)
+  const isScrollable = container.scrollWidth > container.clientWidth + 5
+
+  // Math Check 2: Have we scrolled to the absolute right edge?
+  const isAtEnd =
+    container.scrollLeft + container.clientWidth >= container.scrollWidth - 5
+
+  // If it doesn't need to scroll OR we are at the end, force the arrow to hide!
+  if (!isScrollable || isAtEnd) {
+    arrow.classList.add("!opacity-0")
+  } else {
+    // Otherwise, let the hover effect work normally
+    arrow.classList.remove("!opacity-0")
+  }
+}
+
+// ==========================================
+// SCROLL LISTENER FOR APP SCREENSHOTS
+// ==========================================
+window.handleScreenshotScroll = function (container) {
+  if (!container) return
+  const arrow = container.parentElement.querySelector(".swipe-arrow")
+  if (!arrow) return
+
   const isScrollable = container.scrollWidth > container.clientWidth + 5
   const isAtEnd =
     container.scrollLeft + container.clientWidth >= container.scrollWidth - 5
+
   if (!isScrollable || isAtEnd) {
     arrow.classList.add("!opacity-0")
   } else {
     arrow.classList.remove("!opacity-0")
   }
 }
-window.handleScreenshotScroll = function (container) {
-  if (!container) return
-  const arrow = container.parentElement.querySelector(".swipe-arrow")
-  if (!arrow) return
-  const isScrollable = container.scrollWidth > container.clientWidth + 5
-  const isAtEnd =
-    container.scrollLeft + container.clientWidth >= container.scrollWidth - 5
-  if (!isScrollable || isAtEnd) {
-    arrow.classList.add("!opacity-0")
-  } else {
-    arrow.classList.remove("!opacity-0")
-  }
-}
+
+// ==========================================
+// 3. The Rendering Function
+// ==========================================
 function renderCards() {
   const pathname = window.location.pathname
+
   if (pathname.includes("emergency")) {
     renderEmergencyTable()
     return
   }
+
   const container = document.getElementById("services-container")
   if (!container) return
+
   let currentCategory = ""
   if (pathname.includes("hospitals")) currentCategory = "hospitals"
   else if (pathname.includes("embassies")) currentCategory = "embassies"
   else if (pathname.includes("useful-app")) currentCategory = "apps"
+
+  // --- HELPER: Extracts individual tags for Apps ---
+  const getAppTags = (badge) => {
+    if (!badge) return ["App"]
+    if (Array.isArray(badge)) return badge.map((t) => t.trim())
+    return badge.split("/").map((t) => t.trim())
+  }
+
+  // --- UPGRADED UNIVERSAL SMART MAPPER ---
   const getMasterGroup = (item, category) => {
     let tag = Array.isArray(item.badge) ? item.badge[0] : item.badge || "Other"
     const t = tag.toLowerCase()
+
     if (category === "embassies") {
       if (t.includes("asia") || t.includes("middle east")) return "Asia"
       if (
@@ -776,19 +895,81 @@ function renderCards() {
         return "Oceania"
       return tag
     }
+
     if (category === "hospitals") {
       if (item.category === "clinics" || t.includes("clinic")) return "Clinics"
       return "Hospitals"
     }
+
     return tag
   }
+
+  // ==========================================
+  // CUSTOM UI DROPDOWN POPULATOR
+  // ==========================================
+  const dropdownOptionsContainer = document.getElementById(
+    "customDropdownOptions",
+  )
+  if (dropdownOptionsContainer) {
+    const pageData = servicesData.filter((item) => {
+      if (currentCategory === "hospitals" && item.category === "clinics")
+        return true
+      return item.category === currentCategory
+    })
+
+    const uniqueGroups = new Set()
+
+    pageData.forEach((item) => {
+      if (currentCategory === "apps") {
+        // For apps, split the tags and add them individually!
+        const tags = getAppTags(item.badge)
+        tags.forEach((tag) => uniqueGroups.add(tag))
+      } else {
+        uniqueGroups.add(getMasterGroup(item, currentCategory))
+      }
+    })
+
+    // Sort the categories alphabetically, but force "All" to be at the very top
+    const sortedGroups = ["All", ...Array.from(uniqueGroups).sort()]
+
+    const optionsHTML = sortedGroups
+      .map((group) => {
+        const isSelected = currentFilter === group
+        const label = group === "All" ? "All Categories" : group
+
+        const activeClasses = isSelected
+          ? "bg-[#DFB777]/10 text-[#be924b] font-bold"
+          : "text-[#202D45] hover:bg-gray-50"
+        const checkmark = isSelected
+          ? `<i class="fa-solid fa-check text-[#be924b] text-sm shrink-0"></i>`
+          : `<span class="w-3.5 shrink-0"></span>`
+
+        return `
+        <button onclick="selectCustomFilter('${group}', '${label}')" class="w-full text-left px-4 py-3 flex items-center gap-3 transition-colors text-sm sm:text-base ${activeClasses}">
+          ${checkmark}
+          <span class="truncate">${label}</span>
+        </button>
+      `
+      })
+      .join("")
+
+    if (dropdownOptionsContainer.innerHTML !== optionsHTML) {
+      dropdownOptionsContainer.innerHTML = optionsHTML
+    }
+  }
+
+  // ==========================================
+  // FILTERING LOGIC
+  // ==========================================
   const searchInput = document.getElementById("searchInput")
   const searchTerm = searchInput ? searchInput.value.toLowerCase() : ""
+
   const filteredData = servicesData.filter((item) => {
     let matchesCategory = item.category === currentCategory
     if (currentCategory === "hospitals" && item.category === "clinics") {
       matchesCategory = true
     }
+
     const badgeText = Array.isArray(item.badge)
       ? item.badge.join(" ")
       : item.badge || ""
@@ -796,44 +977,75 @@ function renderCards() {
       (item.name || "").toLowerCase().includes(searchTerm) ||
       (item.description || "").toLowerCase().includes(searchTerm) ||
       badgeText.toLowerCase().includes(searchTerm)
-    return matchesCategory && matchesSearch
+
+    // SMARTER DROPDOWN MATCHING
+    let matchesDropdown = true
+    if (currentFilter !== "All") {
+      if (currentCategory === "apps") {
+        // If it's an app, check if the specific filter exists inside its array of tags
+        const tags = getAppTags(item.badge)
+        matchesDropdown = tags.includes(currentFilter)
+      } else {
+        const itemGroup = getMasterGroup(item, currentCategory)
+        matchesDropdown = itemGroup === currentFilter
+      }
+    }
+
+    return matchesCategory && matchesSearch && matchesDropdown
   })
+
+  // ==========================================
+  // SMART-SORT THE DATA
+  // ==========================================
   if (currentCategory !== "apps") {
     filteredData.sort((a, b) => {
       let groupA = getMasterGroup(a, currentCategory)
       let groupB = getMasterGroup(b, currentCategory)
+
       if (groupA === groupB) {
         return (a.name || "").localeCompare(b.name || "")
       }
+
       if (currentCategory === "hospitals") {
         if (groupA === "Hospitals") return -1
         if (groupB === "Hospitals") return 1
       }
+
       return groupA.localeCompare(groupB)
     })
   }
+
   if (currentCategory === "apps") {
     container.className = "flex flex-col gap-5 max-w-4xl mx-auto w-full"
   } else {
     container.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
   }
+
   if (filteredData.length === 0) {
     container.innerHTML = `
       <div class="col-span-full text-center py-12 w-full">
         <i class="fa-solid fa-magnifying-glass text-4xl text-gray-300 mb-4"></i>
         <h3 class="text-xl font-bold text-[#202D45]">No results found</h3>
-        <p class="text-gray-500 mt-2">Try adjusting your search terms.</p>
+        <p class="text-gray-500 mt-2">Try adjusting your filters or search terms.</p>
       </div>
     `
     return
   }
+
+  // PAGINATION LOGIC
   const totalPages = Math.ceil(filteredData.length / itemsPerPage)
   if (currentPage > totalPages) currentPage = 1
+
   const startIndex = (currentPage - 1) * itemsPerPage
   const endIndex = startIndex + itemsPerPage
   const paginatedData = filteredData.slice(startIndex, endIndex)
+
   let cardsHTML = ""
   let currentBadgeTracker = ""
+
+  // ==========================================
+  // RENDER LOGIC FOR APPS
+  // ==========================================
   if (currentCategory === "apps") {
     cardsHTML =
       `
@@ -844,13 +1056,11 @@ function renderCards() {
     ` +
       paginatedData
         .map((item, index) => {
-          const tags = Array.isArray(item.badge)
-            ? item.badge
-            : item.badge
-              ? item.badge.split("/")
-              : ["App"]
+          const tags = getAppTags(item.badge) // Uses the new helper function!
+
           return `
       <div class="bg-white rounded-3xl shadow-sm hover:shadow-md border border-gray-100 overflow-hidden transition-all duration-300">
+
           <div class="p-5 md:p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 cursor-pointer group relative" onclick="toggleAppCard(${index}, event)">
               <div class="flex items-center gap-4 sm:gap-6 w-full sm:w-auto flex-grow">
                   <img src="${item.image}" alt="${item.name}" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover shadow-sm flex-shrink-0 border border-gray-100 group-hover:scale-105 transition-transform duration-300">
@@ -861,7 +1071,7 @@ function renderCards() {
                               ${tags
                                 .map(
                                   (tag) => `
-                                  <span class="inline-block px-3 py-1 bg-[#DFB777]/20 text-[#be924b] text-[10px] sm:text-xs font-bold rounded-full whitespace-nowrap">${tag.trim()}</span>
+                                  <span class="inline-block px-3 py-1 bg-[#DFB777]/20 text-[#be924b] text-[10px] sm:text-xs font-bold rounded-full whitespace-nowrap">${tag}</span>
                               `,
                                 )
                                 .join("")}
@@ -875,9 +1085,12 @@ function renderCards() {
                   </div>
               </div>
           </div>
+
           <div id="app-details-${index}" class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out bg-[#F8F9FA] app-details-content">
               <div class="px-5 pt-5 pb-6 md:px-8 md:pt-6 md:pb-8 border-t border-gray-100">
+
                   <p class="text-gray-700 text-sm sm:text-base mb-6 leading-relaxed">${item.description}</p>
+
                   ${
                     item.screenshots && item.screenshots.length > 0
                       ? `
@@ -885,10 +1098,12 @@ function renderCards() {
                       <div class="mb-3 px-1">
                           <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">Screenshots</span>
                       </div>
+                      
                       <div class="relative w-full group/slider" onmouseenter="handleScreenshotScroll(this.querySelector('.hide-scrollbar'))">
                           <div class="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory hide-scrollbar" onscroll="handleScreenshotScroll(this)">
                               ${item.screenshots.map((src) => `<img src="${src}" alt="${item.name} screenshot" onclick="openLightbox('${src}')" class="h-48 sm:h-56 md:h-72 w-auto rounded-xl object-cover shadow-sm snap-center border border-gray-200 flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity duration-200">`).join("")}
                           </div>
+                          
                           <div class="swipe-arrow hidden lg:flex absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none opacity-0 group-hover/slider:opacity-100 transition-opacity duration-300 z-10">
                               <div class="w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm shadow-lg flex items-center justify-center border border-gray-200 text-[#202D45]">
                                   <i class="fa-solid fa-chevron-right text-lg ml-0.5"></i>
@@ -899,6 +1114,7 @@ function renderCards() {
                   `
                       : ""
                   }
+
                   <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8 mt-2">
                       <div class="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-4 sm:gap-6 text-sm sm:text-base font-semibold w-full lg:w-auto">
                           ${
@@ -909,6 +1125,7 @@ function renderCards() {
                           </a>`
                               : ""
                           }
+
                           ${
                             item.email && item.email !== "N/A"
                               ? `
@@ -917,6 +1134,7 @@ function renderCards() {
                           </a>`
                               : ""
                           }
+
                           ${
                             item.phone && item.phone !== "N/A"
                               ? `
@@ -926,6 +1144,7 @@ function renderCards() {
                               : ""
                           }
                       </div>
+
                       <div class="grid grid-cols-1 min-[400px]:grid-cols-2 lg:flex items-stretch gap-3 w-full lg:w-auto">
                           ${
                             item.appStoreLink
@@ -939,6 +1158,7 @@ function renderCards() {
                           </a>`
                               : ""
                           }
+
                           ${
                             item.playStoreLink
                               ? `
@@ -964,6 +1184,9 @@ function renderCards() {
         })
         .join("")
   } else {
+    // ==========================================
+    // RENDER LOGIC FOR FLIP CARDS
+    // ==========================================
     cardsHTML =
       `
       <style>
@@ -983,7 +1206,9 @@ function renderCards() {
             : item.badge
               ? item.badge.split("/")
               : ["General"]
+
           let headerGroup = getMasterGroup(item, currentCategory)
+
           let headerHTML = ""
           if (headerGroup !== currentBadgeTracker) {
             headerHTML = `
@@ -994,11 +1219,13 @@ function renderCards() {
         `
             currentBadgeTracker = headerGroup
           }
+
           return (
             headerHTML +
             `
       <div class="flip-container h-[480px] w-full cursor-pointer group js-card" onclick="handleCardFlip(${index}, event)">
         <div class="flip-inner relative w-full h-full rounded-2xl shadow-md group-hover:shadow-xl transition-shadow duration-300">
+
           <div class="flip-front absolute inset-0 rounded-2xl overflow-hidden bg-[#202D45]">
             ${item.image ? `<img src="${item.image}" alt="${item.name}" class="absolute inset-0 w-full h-full object-cover">` : ""}
             <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-[#0f172a]/80 to-transparent opacity-95"></div>
@@ -1021,9 +1248,11 @@ function renderCards() {
               </div>
             </div>
           </div>
+
           <div class="flip-back absolute inset-0 bg-[#202D45] rounded-2xl border border-gray-700 p-5 sm:p-6 flex flex-col">
             <h2 class="text-lg sm:text-xl font-bold text-white mb-5 border-b border-gray-600 pb-4">${item.name}</h2>
             <div class="space-y-4 text-sm text-gray-200 flex-grow mt-2">
+
               ${
                 item.facebook && item.facebook !== "N/A"
                   ? `
@@ -1037,6 +1266,7 @@ function renderCards() {
               </div>`
                   : ""
               }
+
               ${
                 item.phone && item.phone !== "N/A"
                   ? `
@@ -1056,6 +1286,7 @@ function renderCards() {
               </div>`
                   : ""
               }
+
               ${
                 item.email && item.email !== "N/A"
                   ? `
@@ -1067,6 +1298,7 @@ function renderCards() {
               </div>`
                   : ""
               }
+
               <div class="grid grid-cols-[24px_1fr] gap-3 items-start">
                 <div class="flex justify-center items-center h-5">
                   <i class="fa-solid fa-location-dot text-[#DFB777] text-base"></i>
@@ -1097,6 +1329,10 @@ function renderCards() {
         })
         .join("")
   }
+
+  // ==========================================
+  // RENDER PAGINATION BUTTONS
+  // ==========================================
   let paginationHTML = ""
   if (totalPages > 1) {
     let pageButtons = ""
@@ -1107,6 +1343,7 @@ function renderCards() {
         </button>
       `
     }
+
     paginationHTML = `
       <div class="col-span-full flex justify-center items-center gap-2 mt-8 mb-4 w-full">
         <button onclick="goToPage(${currentPage - 1})" class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-gray-50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed" ${currentPage === 1 ? "disabled" : ""}>
@@ -1119,24 +1356,37 @@ function renderCards() {
       </div>
     `
   }
+
   container.innerHTML = cardsHTML + paginationHTML
 }
+
+// 4. Initialize and add Search Bar Event Listeners
 document.addEventListener("DOMContentLoaded", () => {
   renderCards()
+
   const searchInput = document.getElementById("searchInput")
   if (searchInput) {
     searchInput.addEventListener("input", () => {
+      // ALWAYS reset to page 1 when the user types a new search!
       currentPage = 1
       renderCards()
     })
   }
 })
+
+// ==========================================
+// 4. Dedicated Emergency Table Renderer
+// ==========================================
 function renderEmergencyTable() {
   const container = document.getElementById("services-container")
   if (!container) return
+
   const searchInput = document.getElementById("searchInput")
   const searchTerm = searchInput ? searchInput.value.toLowerCase() : ""
+
+  // Data is now split into 'category' and 'name' for smart grouping!
   const emergencyTableData = [
+    // --- Core Medical & Rescue ---
     { category: "Emergency & Rescue", name: "SAMU Ambulance", phone: "119" },
     {
       category: "Emergency & Rescue",
@@ -1148,6 +1398,8 @@ function renderEmergencyTable() {
       name: "Police Department",
       phone: "117 / +855 97 778 0002",
     },
+
+    // --- Phnom Penh City Hall ---
     {
       category: "Phnom Penh Capital Hall",
       name: "Receive complaints and other information",
@@ -1158,6 +1410,8 @@ function renderEmergencyTable() {
       name: "COVID-19 Hotline",
       phone: "1222",
     },
+
+    // --- Hospitals & Health Centers ---
     {
       category: "Hospitals & Health Centers",
       name: "Calmette Hospital",
@@ -1198,6 +1452,8 @@ function renderEmergencyTable() {
       name: "Preah Ket Mealea Hospital",
       phone: "+855 23 427 229",
     },
+
+    // --- Ministry of Interior ---
     {
       category: "Ministry of Interior",
       name: "Public Security",
@@ -1224,6 +1480,8 @@ function renderEmergencyTable() {
       name: "Monitoring Mail & Registration",
       phone: "1290",
     },
+
+    // --- Other Ministries ---
     {
       category: "Ministry of Health",
       name: "Report Infectious Diseases",
@@ -1288,6 +1546,8 @@ function renderEmergencyTable() {
       phone: "1265",
     },
     { category: "Ministry of Tourism", name: "General Hotline", phone: "1221" },
+
+    // --- Committees, Authorities & Other Gov Bodies ---
     {
       category: "National Authorities & Committees",
       name: "National Authority for Combating Drugs (NACD)",
@@ -1358,6 +1618,8 @@ function renderEmergencyTable() {
       name: "National Committee: Land Concession & Forest Protection",
       phone: "1255",
     },
+
+    // --- Police, Military & Gendarmerie ---
     {
       category: "Police, Military & Gendarmerie",
       name: "General Commissariat of National Police",
@@ -1388,6 +1650,8 @@ function renderEmergencyTable() {
       name: "Takeo Provincial Royal Gendarmerie",
       phone: "1212",
     },
+
+    // --- Utilities & Other Services ---
     {
       category: "Utilities, NGOs & Other Services",
       name: "Electricite Du Cambodge (EDC)",
@@ -1424,13 +1688,17 @@ function renderEmergencyTable() {
       phone: "4333",
     },
   ]
+
+  // Make sure the search bar checks the category name too!
   const filteredTable = emergencyTableData.filter(
     (item) =>
       item.name.toLowerCase().includes(searchTerm) ||
       item.category.toLowerCase().includes(searchTerm) ||
       item.phone.includes(searchTerm),
   )
+
   container.className = "w-full max-w-4xl mx-auto px-4 sm:px-0"
+
   if (filteredTable.length === 0) {
     container.innerHTML = `
       <div class="col-span-full text-center py-12 w-full">
@@ -1440,10 +1708,14 @@ function renderEmergencyTable() {
       </div>`
     return
   }
+
+  // --- HTML Generation with Smart Grouping ---
   let tableRowsHTML = ""
   let currentCategoryTracker = ""
   let globalRowNumber = 1
+
   filteredTable.forEach((item) => {
+    // 1. If the category changes, insert a full-width header row
     if (item.category !== currentCategoryTracker) {
       tableRowsHTML += `
         <tr class="bg-gray-100 border-b border-gray-200">
@@ -1454,6 +1726,8 @@ function renderEmergencyTable() {
       `
       currentCategoryTracker = item.category
     }
+
+    // 2. Insert the actual service row
     tableRowsHTML += `
       <tr class="hover:bg-[#DFB777]/15 transition-colors bg-white border-b border-gray-100 last:border-0">
         <td class="py-4 px-6 text-center font-semibold text-gray-500">${globalRowNumber++}</td>
@@ -1470,6 +1744,8 @@ function renderEmergencyTable() {
       </tr>
     `
   })
+
+  // Render the final table to the screen
   container.innerHTML = `
     <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden mb-8 w-full mt-4">
       <div class="overflow-x-auto">
@@ -1489,21 +1765,32 @@ function renderEmergencyTable() {
     </div>
   `
 }
+
+// ==========================================
+// 5. Fullscreen Image Lightbox
+// ==========================================
 window.openLightbox = function (src) {
+  // Create the dark overlay container
   const lightbox = document.createElement("div")
   lightbox.className =
     "fixed inset-0 z-[100] bg-[#0f172a]/95 backdrop-blur-sm flex items-center justify-center opacity-0 transition-opacity duration-300 cursor-pointer"
+
+  // Add the close button and the image
   lightbox.innerHTML = `
     <button class="absolute top-6 right-6 text-white hover:text-[#DFB777] transition-colors z-[101]">
       <i class="fa-solid fa-xmark text-4xl"></i>
     </button>
     <img src="${src}" class="max-h-[90vh] max-w-[90vw] object-contain rounded-xl shadow-2xl scale-95 transition-transform duration-300" alt="Fullscreen View">
   `
+
+  // Close the lightbox when clicking anywhere
   lightbox.onclick = function () {
     lightbox.classList.remove("opacity-100")
     lightbox.querySelector("img").classList.remove("scale-100")
-    setTimeout(() => lightbox.remove(), 300)
+    setTimeout(() => lightbox.remove(), 300) // Wait for fade-out animation to finish
   }
+
+  // Add it to the page and trigger the smooth fade-in animation
   document.body.appendChild(lightbox)
   requestAnimationFrame(() => {
     lightbox.classList.add("opacity-100")

@@ -66,6 +66,11 @@ function renderStars(rating) {
   return starsHtml;
 }
 
+function getDetailUrl(item) {
+  if (item.pageUrl) return item.pageUrl;
+  return `explore-detail.html?place=${encodeURIComponent(item.name)}`;
+}
+
 // build card places as card component
 function buildCard(item) {
   const loved = isFavourited(item.name);
@@ -112,8 +117,7 @@ function buildCard(item) {
         </div>
         <div class="flex gap-2">
           <a
-            href="${item.pageUrl || "#"}"
-            target="_blank"
+            href="${getDetailUrl(item)}"
             class="block mt-auto border border-primary text-center py-2 rounded-lg hover:bg-background transition w-full"
           >
             View Details

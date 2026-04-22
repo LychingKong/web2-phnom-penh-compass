@@ -470,65 +470,8 @@
             Explore some of Phnom Penh's most visited and loved places.
           </p>
 
-          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <a
-              href="/pages/explore.html"
-              class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition group"
-            >
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Royal_Palace%2C_Phnom_Penh.jpg/640px-Royal_Palace%2C_Phnom_Penh.jpg"
-                class="w-full h-48 object-cover group-hover:scale-105 transition duration-300"
-                alt="Royal Palace"
-              />
-              <div class="p-5">
-                <h3 class="font-bold text-lg text-primary">Royal Palace</h3>
-                <p class="text-gray-500 text-sm mt-1">Historic Landmark</p>
-              </div>
-            </a>
-            <a
-              href="/pages/explore.html"
-              class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition group"
-            >
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Wat_Phnom_%28Phnom_Penh%29.jpg/640px-Wat_Phnom_%28Phnom_Penh%29.jpg"
-                class="w-full h-48 object-cover group-hover:scale-105 transition duration-300"
-                alt="Wat Phnom"
-              />
-              <div class="p-5">
-                <h3 class="font-bold text-lg text-primary">Wat Phnom</h3>
-                <p class="text-gray-500 text-sm mt-1">Buddhist Temple</p>
-              </div>
-            </a>
-            <a
-              href="/pages/explore.html"
-              class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition group"
-            >
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/National_Museum_of_Cambodia.jpg/640px-National_Museum_of_Cambodia.jpg"
-                class="w-full h-48 object-cover group-hover:scale-105 transition duration-300"
-                alt="National Museum"
-              />
-              <div class="p-5">
-                <h3 class="font-bold text-lg text-primary">National Museum</h3>
-                <p class="text-gray-500 text-sm mt-1">
-                  Khmer Art &amp; Culture
-                </p>
-              </div>
-            </a>
-            <a
-              href="/pages/explore.html"
-              class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition group"
-            >
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Phsar_Thmei_2.jpg/640px-Phsar_Thmei_2.jpg"
-                class="w-full h-48 object-cover group-hover:scale-105 transition duration-300"
-                alt="Central Market"
-              />
-              <div class="p-5">
-                <h3 class="font-bold text-lg text-primary">Central Market</h3>
-                <p class="text-gray-500 text-sm mt-1">Shopping &amp; Food</p>
-              </div>
-            </a>
+          <div id="popular-destinations-grid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Cards are injected by main.js from sightsData -->
           </div>
 
           <div class="text-center mt-12">
@@ -597,6 +540,7 @@
     <!-- Scripts — order matters, do not change -->
     <script src="config.js"></script>
     <script src="src/js/components.js"></script>
+    <script src="src/js/exploreData.js"></script>
     <script src="src/js/main.js"></script>
     <script src="tailwind-config.js"></script>
   </body>

@@ -136,28 +136,42 @@ const showError = () => {
 };
 
 const fetchAdvisory = async () => {
-  const proxies = [
-    "https://api.allorigins.win/raw?url=",
-    "https://corsproxy.io/?",
-    "https://cors-anywhere.herokuapp.com/",
-  ]
   const url = "https://www.smartraveller.gov.au/destinations-export"
 
-  for (const proxy of proxies) {
-    try {
-      const res = await fetch(`${proxy}${url}`)
-      if (!res.ok) continue
+  // Try allorigins first — needs double parse
+  try {
+    const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`)
+    if (res.ok) {
+      const json = await res.json()
+      const data = JSON.parse(json.contents)
+      const cambodia = data.find(c => c.title === "Cambodia")
+      if (cambodia) {
+        renderAdvisory(cambodia)
+        return
+      }
+    }
+  } catch (err) {
+    console.log("allorigins failed:", err.message)
+  }
+
+  // Fallback to corsproxy
+  try {
+    const res = await fetch(`https://corsproxy.io/?${url}`)
+    if (res.ok) {
       const data = await res.json()
       const cambodia = data.find(c => c.title === "Cambodia")
-      if (!cambodia) continue
-      renderAdvisory(cambodia)
-      return
-    } catch (err) {
-      console.log(`Proxy failed: ${proxy}`, err.message)
+      if (cambodia) {
+        renderAdvisory(cambodia)
+        return
+      }
     }
+  } catch (err) {
+    console.log("corsproxy failed:", err.message)
   }
+
   showError()
 }
+
 window.onload = async () => {
   await fetchAdvisory();
 };

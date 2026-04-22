@@ -465,12 +465,54 @@ function renderCards() {
     cardsHTML =
       `
       <style>
-        .flip-container { perspective: 1000px; }
-        .flip-inner { transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
-        .flip-front, .flip-back { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
-        .flip-back { transform: rotateY(180deg); }
-        .is-flipped { transform: rotateY(180deg); }
-        .is-flipped .flip-front { pointer-events: none; }
+        /* Base 3D Space */
+        .flip-container { 
+          perspective: 1000px; 
+          -webkit-perspective: 1000px; 
+        }
+        
+        /* The Rotating Wrapper */
+        .flip-inner { 
+          transform-style: preserve-3d; 
+          -webkit-transform-style: preserve-3d; 
+          transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        
+        /* Both Faces: Apple specific hardware acceleration fixes */
+        .flip-front, .flip-back { 
+          backface-visibility: hidden; 
+          -webkit-backface-visibility: hidden; 
+          /* Forces iOS to render this on the GPU, fixing the bleed-through */
+          transform: translate3d(0,0,0);
+          -webkit-transform: translate3d(0,0,0);
+        }
+        
+        /* Front Face specific */
+        .flip-front {
+          z-index: 2;
+          transform: rotateY(0deg);
+          -webkit-transform: rotateY(0deg);
+        }
+
+        /* Back Face specific */
+        .flip-back { 
+          z-index: 1;
+          transform: rotateY(180deg); 
+          -webkit-transform: rotateY(180deg);
+        }
+        
+        /* The active flipped state */
+        .is-flipped { 
+          transform: rotateY(180deg); 
+          -webkit-transform: rotateY(180deg);
+        }
+        
+        /* Disables clicking the front when looking at the back */
+        .is-flipped .flip-front { 
+          pointer-events: none; 
+          z-index: 0;
+        }
+        
         .flip-back a { position: relative; z-index: 50; }
       </style>
     ` +

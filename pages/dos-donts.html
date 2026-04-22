@@ -1,208 +1,220 @@
 <!doctype html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Do's & Don'ts - Phnom Penh Compass</title>
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
     <link rel="stylesheet" href="../src/css/style.css" />
-</head>
+  </head>
 
-<body class="bg-[#f5f7f6] text-[#1C3F5E]">
+  <body class="bg-background text-primary">
     <header></header>
-    <main class="pt-24 px-4">
+    <main class="pt-24 pb-12 px-4">
+      <!-- TITLE -->
+      <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold">Do’s & Don’ts</h1>
+        <p class="text-gray-500 mt-2">
+          Navigate Phnom Penh with Respect and Confidence
+        </p>
+      </div>
 
-        <!-- TITLE -->
-        <div class="text-center mb-12">
-            <h1 class="text-4xl font-bold">Do’s & Don’ts</h1>
-            <p class="text-gray-500 mt-2">
-                Navigate Phnom Penh with Respect and Confidence
-            </p>
+      <!-- CONTAINER -->
+      <div class="max-w-5xl mx-auto rounded-2xl overflow-hidden shadow-sm">
+        <!-- TABS -->
+        <div class="flex">
+          <button
+            id="tab-dos"
+            class="w-1/2 py-4 font-semibold bg-[#9FCDB6] text-[#1C3F5E]"
+          >
+            Do’s
+          </button>
+          <button
+            id="tab-donts"
+            class="w-1/2 py-4 font-semibold bg-[#E4B6B6] text-[#1C3F5E]"
+          >
+            Don’ts
+          </button>
         </div>
 
-        <!-- CONTAINER -->
-        <div class="max-w-5xl mx-auto rounded-2xl overflow-hidden shadow-sm">
-            <!-- TABS -->
-            <div class="flex">
-                <button id="tab-dos"
-                    class="w-1/2 py-4 font-semibold bg-[#9FCDB6] text-[#1C3F5E]">
-                    Do’s
-                </button>
-                <button id="tab-donts"
-                    class="w-1/2 py-4 font-semibold bg-[#E4B6B6] text-[#1C3F5E]">
-                    Don’ts
-                </button>
+        <!-- CONTENT BOX -->
+        <div id="content-box" class="p-10 text-center">
+          <!-- DO CONTENT -->
+          <div id="dos-content" class="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div>
+              <i class="fa-solid fa-hands-praying text-5xl mb-4"></i>
+              <h3 class="font-bold text-lg">Greet with a “Sampeah”</h3>
+              <p class="text-gray-600">
+                Put palms together and bow slightly to show respect.
+              </p>
             </div>
 
-            <!-- CONTENT BOX -->
-            <div id="content-box" class="p-10 text-center">
-
-                <!-- DO CONTENT -->
-                <div id="dos-content"
-                    class="grid grid-cols-1 md:grid-cols-3 gap-12">
-
-                    <div>
-                        <i class="fa-solid fa-hands-praying text-5xl mb-4"></i>
-                        <h3 class="font-bold text-lg">Greet with a “Sampeah”</h3>
-                        <p class="text-gray-600">
-                            Put palms together and bow slightly to show respect.
-                        </p>
-                    </div>
-
-                    <div>
-                        <i class="fa-solid fa-language text-5xl mb-4"></i>
-                        <h3 class="font-bold text-lg">Learn simple Khmer phrases</h3>
-                        <p class="text-gray-600">
-                            Locals appreciate small efforts like “Hello” or “Thank you”.
-                        </p>
-                    </div>
-
-                    <div>
-                        <i class="fa-solid fa-shoe-prints text-5xl mb-4"></i>
-                        <h3 class="font-bold text-lg">Remove shoes before entering homes</h3>
-                        <p class="text-gray-600">
-                            Always take shoes off when entering someone's house.
-                        </p>
-                    </div>
-
-                    <div>
-                        <i class="fa-solid fa-hand-holding-heart text-5xl mb-4"></i>
-                        <h3 class="font-bold text-lg">Show respect to elders & monks</h3>
-                        <p class="text-gray-600">
-                            Greet politely and avoid standing higher than monks.
-                        </p>
-                    </div>
-
-                    <div>
-                        <i class="fa-solid fa-shirt text-5xl mb-4"></i>
-                        <h3 class="font-bold text-lg">Dress modestly at temples</h3>
-                        <p class="text-gray-600">
-                            Cover shoulders & knees when visiting religious sites.
-                        </p>
-                    </div>
-
-                    <div>
-                        <i class="fa-solid fa-recycle text-5xl mb-4"></i>
-                        <h3 class="font-bold text-lg">Dispose trash properly</h3>
-                        <p class="text-gray-600">
-                            Help keep Phnom Penh clean by using bins.
-                        </p>
-                    </div>
-
-                    <div>
-                        <i class="fa-solid fa-helmet-safety text-5xl mb-4"></i>
-                        <h3 class="font-bold text-lg">Wear a helmet when riding motos</h3>
-                        <p class="text-gray-600">
-                            Safety first — and it's required by law.
-                        </p>
-                    </div>
-
-                    <div>
-                        <i class="fa-solid fa-handshake text-5xl mb-4"></i>
-                        <h3 class="font-bold text-lg">Negotiate politely</h3>
-                        <p class="text-gray-600">
-                            Bargaining is normal — just keep it friendly.
-                        </p>
-                    </div>
-
-                    <div>
-                        <i class="fa-solid fa-money-bill text-5xl mb-4"></i>
-                        <h3 class="font-bold text-lg">Carry small cash</h3>
-                        <p class="text-gray-600">
-                            Many local shops only accept small bills.
-                        </p>
-                    </div>
-
-                </div>
-
-                <!-- DON'T CONTENT -->
-                <div id="donts-content"
-                    class="hidden grid grid-cols-1 md:grid-cols-3 gap-12">
-
-                    <div>
-                        <i class="fa-solid fa-ban text-5xl text-red-500 mb-4"></i>
-                        <h3 class="font-bold text-lg">Don't touch anyone’s head</h3>
-                        <p class="text-gray-600">
-                            The head is considered sacred in Khmer culture.
-                        </p>
-                    </div>
-
-                    <div>
-                        <i class="fa-solid fa-shoe-prints text-5xl text-red-500 mb-4"></i>
-                        <h3 class="font-bold text-lg">Don't point feet at people</h3>
-                        <p class="text-gray-600">
-                            Feet are seen as unclean — avoid pointing or touching.
-                        </p>
-                    </div>
-
-                    <div>
-                        <i class="fa-solid fa-hand text-5xl text-red-500 mb-4"></i>
-                        <h3 class="font-bold text-lg">Don't touch monks (especially women)</h3>
-                        <p class="text-gray-600">
-                            Physical contact with monks is inappropriate.
-                        </p>
-                    </div>
-
-                    <div>
-                        <i class="fa-solid fa-trash text-5xl text-red-500 mb-4"></i>
-                        <h3 class="font-bold text-lg">Don't litter in public</h3>
-                        <p class="text-gray-600">
-                            Keep the city clean and dispose trash properly.
-                        </p>
-                    </div>
-
-                    <div>
-                        <i class="fa-solid fa-volume-high text-5xl text-red-500 mb-4"></i>
-                        <h3 class="font-bold text-lg">Don't raise your voice</h3>
-                        <p class="text-gray-600">
-                            Loud or aggressive tone is considered rude.
-                        </p>
-                    </div>
-
-                    <div>
-                        <i class="fa-solid fa-shoe-prints text-5xl text-red-500 mb-4"></i>
-                        <h3 class="font-bold text-lg">Don't enter temples with shoes</h3>
-                        <p class="text-gray-600">
-                            Always remove shoes at temples and sacred places.
-                        </p>
-                    </div>
-
-                    <div>
-                        <i class="fa-solid fa-heart text-5xl text-red-500 mb-4"></i>
-                        <h3 class="font-bold text-lg">Don't show excessive PDA</h3>
-                        <p class="text-gray-600">
-                            Public affection is not culturally accepted.
-                        </p>
-                    </div>
-
-                    <div>
-                        <i class="fa-solid fa-building-columns text-5xl text-red-500 mb-4"></i>
-                        <h3 class="font-bold text-lg">Don't touch sacred objects</h3>
-                        <p class="text-gray-600">
-                            Always ask before touching religious items.
-                        </p>
-                    </div>
-
-                    <div>
-                        <i class="fa-solid fa-face-angry text-5xl text-red-500 mb-4"></i>
-                        <h3 class="font-bold text-lg">Don't show anger in public</h3>
-                        <p class="text-gray-600">
-                            Staying calm is a sign of respect in Khmer culture.
-                        </p>
-                    </div>
-                </div>
+            <div>
+              <i class="fa-solid fa-language text-5xl mb-4"></i>
+              <h3 class="font-bold text-lg">Learn simple Khmer phrases</h3>
+              <p class="text-gray-600">
+                Locals appreciate small efforts like “Hello” or “Thank you”.
+              </p>
             </div>
+
+            <div>
+              <i class="fa-solid fa-shoe-prints text-5xl mb-4"></i>
+              <h3 class="font-bold text-lg">
+                Remove shoes before entering homes
+              </h3>
+              <p class="text-gray-600">
+                Always take shoes off when entering someone's house.
+              </p>
+            </div>
+
+            <div>
+              <i class="fa-solid fa-hand-holding-heart text-5xl mb-4"></i>
+              <h3 class="font-bold text-lg">Show respect to elders & monks</h3>
+              <p class="text-gray-600">
+                Greet politely and avoid standing higher than monks.
+              </p>
+            </div>
+
+            <div>
+              <i class="fa-solid fa-shirt text-5xl mb-4"></i>
+              <h3 class="font-bold text-lg">Dress modestly at temples</h3>
+              <p class="text-gray-600">
+                Cover shoulders & knees when visiting religious sites.
+              </p>
+            </div>
+
+            <div>
+              <i class="fa-solid fa-recycle text-5xl mb-4"></i>
+              <h3 class="font-bold text-lg">Dispose trash properly</h3>
+              <p class="text-gray-600">
+                Help keep Phnom Penh clean by using bins.
+              </p>
+            </div>
+
+            <div>
+              <i class="fa-solid fa-helmet-safety text-5xl mb-4"></i>
+              <h3 class="font-bold text-lg">Wear a helmet when riding motos</h3>
+              <p class="text-gray-600">
+                Safety first — and it's required by law.
+              </p>
+            </div>
+
+            <div>
+              <i class="fa-solid fa-handshake text-5xl mb-4"></i>
+              <h3 class="font-bold text-lg">Negotiate politely</h3>
+              <p class="text-gray-600">
+                Bargaining is normal — just keep it friendly.
+              </p>
+            </div>
+
+            <div>
+              <i class="fa-solid fa-money-bill text-5xl mb-4"></i>
+              <h3 class="font-bold text-lg">Carry small cash</h3>
+              <p class="text-gray-600">
+                Many local shops only accept small bills.
+              </p>
+            </div>
+          </div>
+
+          <!-- DON'T CONTENT -->
+          <div
+            id="donts-content"
+            class="hidden grid grid-cols-1 md:grid-cols-3 gap-12"
+          >
+            <div>
+              <i class="fa-solid fa-ban text-5xl text-red-500 mb-4"></i>
+              <h3 class="font-bold text-lg">Don't touch anyone’s head</h3>
+              <p class="text-gray-600">
+                The head is considered sacred in Khmer culture.
+              </p>
+            </div>
+
+            <div>
+              <i class="fa-solid fa-shoe-prints text-5xl text-red-500 mb-4"></i>
+              <h3 class="font-bold text-lg">Don't point feet at people</h3>
+              <p class="text-gray-600">
+                Feet are seen as unclean — avoid pointing or touching.
+              </p>
+            </div>
+
+            <div>
+              <i class="fa-solid fa-hand text-5xl text-red-500 mb-4"></i>
+              <h3 class="font-bold text-lg">
+                Don't touch monks (especially women)
+              </h3>
+              <p class="text-gray-600">
+                Physical contact with monks is inappropriate.
+              </p>
+            </div>
+
+            <div>
+              <i class="fa-solid fa-trash text-5xl text-red-500 mb-4"></i>
+              <h3 class="font-bold text-lg">Don't litter in public</h3>
+              <p class="text-gray-600">
+                Keep the city clean and dispose trash properly.
+              </p>
+            </div>
+
+            <div>
+              <i class="fa-solid fa-volume-high text-5xl text-red-500 mb-4"></i>
+              <h3 class="font-bold text-lg">Don't raise your voice</h3>
+              <p class="text-gray-600">
+                Loud or aggressive tone is considered rude.
+              </p>
+            </div>
+
+            <div>
+              <i class="fa-solid fa-shoe-prints text-5xl text-red-500 mb-4"></i>
+              <h3 class="font-bold text-lg">Don't enter temples with shoes</h3>
+              <p class="text-gray-600">
+                Always remove shoes at temples and sacred places.
+              </p>
+            </div>
+
+            <div>
+              <i class="fa-solid fa-heart text-5xl text-red-500 mb-4"></i>
+              <h3 class="font-bold text-lg">Don't show excessive PDA</h3>
+              <p class="text-gray-600">
+                Public affection is not culturally accepted.
+              </p>
+            </div>
+
+            <div>
+              <i
+                class="fa-solid fa-building-columns text-5xl text-red-500 mb-4"
+              ></i>
+              <h3 class="font-bold text-lg">Don't touch sacred objects</h3>
+              <p class="text-gray-600">
+                Always ask before touching religious items.
+              </p>
+            </div>
+
+            <div>
+              <i class="fa-solid fa-face-angry text-5xl text-red-500 mb-4"></i>
+              <h3 class="font-bold text-lg">Don't show anger in public</h3>
+              <p class="text-gray-600">
+                Staying calm is a sign of respect in Khmer culture.
+              </p>
+            </div>
+          </div>
         </div>
+      </div>
     </main>
 
     <footer></footer>
     <script src="../src/js/dos-donts.js"></script>
-    <script src="../src/js/footer.js"></script>
-    <script src="../tailwind-config.js"></script>
 
-</body>
+    <!-- Scripts — order matters, do not change -->
+    <script src="../config.js"></script>
+    <script src="../src/js/components.js"></script>
+
+    <!-- Custom tailwind configuration -->
+    <script src="../tailwind-config.js"></script>
+  </body>
 </html>

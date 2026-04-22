@@ -1,5 +1,5 @@
 const MAX_IMAGE_SIZE = 1024 * 1024; // 1 MB
-
+let editingCommentId = null;
 function readComments() {
   try {
     return JSON.parse(localStorage.getItem(CONFIG.COMMENTS_KEY)) || [];
@@ -83,12 +83,15 @@ function renderComments(placeName) {
 
   commentsList.innerHTML = comments
     .map((comment) => {
-      const canDelete =
+      const canManage =
         !comment.authorId || comment.authorId === currentAuthorId;
       const imageBlock = comment.photoData
         ? `<img src="${comment.photoData}" alt="User uploaded feedback" class="object-cover w-full mt-3 border border-gray-100 rounded-lg h-52" />`
         : "";
-      const deleteButton = canDelete
+      const editButton = canManage
+        ? `<button type="button" class="comment-edit-btn text-xs font-semibold text-secondary hover:underline" data-comment-id="${comment.id}">Edit</button>`
+        : "";
+      const deleteButton = canManage
         ? `<button type="button" class="comment-delete-btn text-xs font-semibold text-red-600 hover:underline" data-comment-id="${comment.id}">Delete</button>`
         : "";
 
@@ -98,6 +101,7 @@ function renderComments(placeName) {
 						<h3 class="font-semibold text-primary">${comment.name}</h3>
 						<div class="flex items-center gap-3">
 							<time class="text-xs text-gray-500">${formatDate(comment.createdAt)}</time>
+              ${editButton}
 							${deleteButton}
 						</div>
 					</div>
@@ -124,6 +128,54 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
+function unescapeHtml(text) {
+  const textarea = document.createElement("textarea");
+  textarea.innerHTML = text || "";
+  return textarea.value;
+}
+
+function setEditMode(editing, comment) {
+  const form = document.getElementById("comment-form");
+  const submitBtn = document.getElementById("comment-submit-btn");
+  const cancelBtn = document.getElementById("comment-cancel-edit-btn");
+  const modeText = document.getElementById("comment-form-mode");
+
+  if (!editing || !comment) {
+    editingCommentId = null;
+    form.reset();
+    submitBtn.textContent = "Post Comment";
+    cancelBtn.classList.add("hidden");
+    modeText.classList.add("hidden");
+    modeText.textContent = "";
+    return;
+  }
+
+  editingCommentId = comment.id;
+  form.name.value = unescapeHtml(comment.name);
+  form.message.value = unescapeHtml(comment.message);
+  form.photo.value = "";
+  submitBtn.textContent = "Save Changes";
+  cancelBtn.classList.remove("hidden");
+  modeText.classList.remove("hidden");
+  modeText.textContent = `Editing comment by ${unescapeHtml(comment.name) || "Unknown"}.`;
+  form.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function startEditComment(commentId) {
+  const comments = readComments();
+  const currentAuthorId = getAuthorId();
+  const target = comments.find((comment) => comment.id === commentId);
+  if (!target) return;
+
+  const canEdit = !target.authorId || target.authorId === currentAuthorId;
+  if (!canEdit) {
+    alert("You can only edit your own comments.");
+    return;
+  }
+
+  setEditMode(true, target);
+}
+
 async function handleSubmit(event, placeName) {
   event.preventDefault();
 
@@ -146,6 +198,35 @@ async function handleSubmit(event, placeName) {
     photoData = await fileToDataUrl(photoFile);
   }
 
+  if (editingCommentId) {
+    const comments = readComments();
+    const currentAuthorId = getAuthorId();
+    const target = comments.find((comment) => comment.id === editingCommentId);
+    if (!target) {
+      alert("The comment you are editing no longer exists.");
+      setEditMode(false);
+      renderComments(placeName);
+      return;
+    }
+
+    const canEdit = !target.authorId || target.authorId === currentAuthorId;
+    if (!canEdit) {
+      alert("You can only edit your own comments.");
+      setEditMode(false);
+      return;
+    }
+
+    target.name = escapeHtml(name);
+    target.message = escapeHtml(message);
+    target.photoData = photoData || target.photoData || "";
+    target.updatedAt = new Date().toISOString();
+
+    writeComments(comments);
+    setEditMode(false);
+    renderComments(placeName);
+    return;
+  }
+
   const newComment = {
     id: crypto.randomUUID(),
     placeName,
@@ -160,7 +241,7 @@ async function handleSubmit(event, placeName) {
   comments.push(newComment);
   writeComments(comments);
 
-  form.reset();
+  setEditMode(false);
   renderComments(placeName);
 }
 
@@ -181,6 +262,9 @@ function deleteCommentById(commentId, placeName) {
 
   const updated = comments.filter((comment) => comment.id !== commentId);
   writeComments(updated);
+  if (editingCommentId === commentId) {
+    setEditMode(false);
+  }
   renderComments(placeName);
 }
 
@@ -192,11 +276,19 @@ function init() {
   renderComments(selectedPlaceName);
 
   const form = document.getElementById("comment-form");
+  const cancelEditBtn = document.getElementById("comment-cancel-edit-btn");
   form.addEventListener("submit", (event) =>
     handleSubmit(event, selectedPlaceName),
   );
+  cancelEditBtn.addEventListener("click", () => setEditMode(false));
 
   document.addEventListener("click", (event) => {
+    const editBtn = event.target.closest(".comment-edit-btn");
+    if (editBtn) {
+      startEditComment(editBtn.dataset.commentId);
+      return;
+    }
+
     const deleteBtn = event.target.closest(".comment-delete-btn");
     if (!deleteBtn) return;
     deleteCommentById(deleteBtn.dataset.commentId, selectedPlaceName);

@@ -123,6 +123,7 @@ async function initWeather() {
 
 /**
  * Render the first 4 entries from sightsData into #popular-destinations-grid.
+ * Uses the same card structure as buildCard() in explore.js.
  * sightsData is provided by exploreData.js which is loaded before this script.
  */
 function renderPopularDestinations() {
@@ -133,47 +134,55 @@ function renderPopularDestinations() {
 
   grid.innerHTML = items
     .map((sight) => {
-      // Build star display (filled / half / empty up to 5)
+      // Stars — same logic as renderStars() in explore.js
       const fullStars = Math.floor(sight.rating);
-      const halfStar = sight.rating % 1 >= 0.5;
-      const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
-
-      const stars =
-        '<i class="fa-solid fa-star text-yellow-400"></i>'.repeat(fullStars) +
-        (halfStar
-          ? '<i class="fa-solid fa-star-half-stroke text-yellow-400"></i>'
-          : "") +
-        '<i class="fa-regular fa-star text-yellow-300"></i>'.repeat(emptyStars);
+      const hasHalf = sight.rating % 1 >= 0.5;
+      const emptyStars = 5 - fullStars - (hasHalf ? 1 : 0);
+      let starsHtml = "";
+      for (let i = 0; i < fullStars; i++) starsHtml += `<i class="fas fa-star"></i>`;
+      if (hasHalf) starsHtml += `<i class="fas fa-star-half-alt"></i>`;
+      for (let i = 0; i < emptyStars; i++) starsHtml += `<i class="far fa-star"></i>`;
 
       const detailUrl = `/pages/explore/explore-detail.html?place=${encodeURIComponent(sight.name)}`;
 
+      // Identical markup to buildCard() in explore.js
       return `
-      <a href="${detailUrl}"
-        class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition group flex flex-col">
-        <div class="overflow-hidden">
-          <img
-            src="${sight.image}"
-            alt="${sight.alt}"
-            class="w-full h-48 object-cover group-hover:scale-105 transition duration-300"
-            onerror="this.src='https://placehold.co/640x360/1c3f5e/ffffff?text=No+Image'"
-          />
+    <div class="relative flex flex-col overflow-hidden transition-shadow bg-white border border-gray-100 shadow-md rounded-xl hover:shadow-lg">
+      <div class="h-56 w-full overflow-hidden">
+        <img
+          src="${sight.image}"
+          alt="${sight.alt}"
+          class="w-full h-full object-cover"
+          onerror="this.src='https://placehold.co/640x360/1c3f5e/ffffff?text=No+Image'"
+        />
+      </div>
+      <div class="flex flex-col p-6">
+        <div class="flex items-center mb-2 text-sm text-gray-800">
+          <i class="fas fa-map-marker-alt mr-2 text-secondary shrink-0"></i>
+          <span class="line-clamp-1">${sight.location}</span>
         </div>
-        <div class="p-5 flex flex-col gap-1 flex-1">
-          <h3 class="font-bold text-lg text-primary leading-snug">${sight.name}</h3>
-          <p class="text-gray-400 text-xs flex items-center gap-1">
-            <i class="fa-solid fa-location-dot"></i> ${sight.location}
-          </p>
-          <div class="flex items-center gap-1 text-sm mt-1">
-            ${stars}
-            <span class="text-gray-500 text-xs ml-1">${sight.rating.toFixed(1)}</span>
-          </div>
-          <p class="text-gray-500 text-xs mt-auto pt-2 border-t border-gray-100 flex items-center gap-1">
-            <i class="fa-solid fa-ticket text-primary opacity-60"></i> ${sight.price}
-            &nbsp;·&nbsp;
-            <i class="fa-regular fa-clock text-primary opacity-60"></i> ${sight.hours}
-          </p>
+        <h3 class="font-semibold text-xl text-primary mb-2 line-clamp-1">${sight.name}</h3>
+        <p class="mb-4 text-sm text-gray-600 line-clamp-3 min-h-[3.75rem]">${sight.description}</p>
+        <div class="flex items-center justify-between mb-3 text-sm">
+          <span class="font-semibold text-secondary">${sight.price}</span>
+          <span class="font-medium text-primary">${sight.hours}</span>
         </div>
-      </a>`;
+        <div class="flex items-center mb-4">
+          <div class="flex text-secondary">${starsHtml}</div>
+          <span class="ml-2 text-sm text-gray-600">(${sight.rating})</span>
+        </div>
+        <div class="flex gap-2">
+          <a href="${detailUrl}"
+            class="block mt-auto border border-primary text-center py-2 rounded-lg hover:bg-background transition w-full">
+            View Details
+          </a>
+          <a href="${sight.mapsUrl}" target="_blank"
+            class="block mt-auto bg-primary text-white text-center py-2 rounded-lg hover:bg-[#162f45] transition w-full">
+            Get Direction
+          </a>
+        </div>
+      </div>
+    </div>`;
     })
     .join("");
 }

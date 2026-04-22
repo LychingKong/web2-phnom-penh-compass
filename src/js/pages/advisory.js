@@ -136,21 +136,28 @@ const showError = () => {
 };
 
 const fetchAdvisory = async () => {
-  try {
-    const res = await fetch(
-      "https://corsproxy.io/?https://www.smartraveller.gov.au/destinations-export",
-    );
-    if (!res.ok) throw new Error(`${res.status}: ${res.statusText}`);
-    const data = await res.json();
-    const cambodia = data.find((c) => c.title === "Cambodia");
-    if (!cambodia) throw new Error("Cambodia not found");
-    renderAdvisory(cambodia);
-  } catch (err) {
-    console.log(err.message);
-    showError();
-  }
-};
+  const proxies = [
+    "https://api.allorigins.win/raw?url=",
+    "https://corsproxy.io/?",
+    "https://cors-anywhere.herokuapp.com/",
+  ]
+  const url = "https://www.smartraveller.gov.au/destinations-export"
 
+  for (const proxy of proxies) {
+    try {
+      const res = await fetch(`${proxy}${url}`)
+      if (!res.ok) continue
+      const data = await res.json()
+      const cambodia = data.find(c => c.title === "Cambodia")
+      if (!cambodia) continue
+      renderAdvisory(cambodia)
+      return
+    } catch (err) {
+      console.log(`Proxy failed: ${proxy}`, err.message)
+    }
+  }
+  showError()
+}
 window.onload = async () => {
   await fetchAdvisory();
 };
